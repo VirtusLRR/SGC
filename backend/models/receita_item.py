@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, ForeignKey, Numeric
 from sqlalchemy.orm import relationship
-from app.database.base import Base
+from database.database import Base
 
 class ReceitaItem(Base):
     __tablename__ = "Receita_Item"
