@@ -8,9 +8,9 @@ class ItemBase(BaseModel):
     amount: float
     description: Optional[str] = None
     price: Optional[float] = 0
-    expiration_date: Optional[str] = None
-    create_date: Optional[str] = datetime.now()
-    update_date: Optional[str] = None
+    expiration_date: Optional[datetime] = None
+    create_at: Optional[datetime] = datetime.now()
+    update_at: Optional[datetime] = None
 
 class ItemRequest(ItemBase):
     ...
@@ -18,5 +18,7 @@ class ItemRequest(ItemBase):
 class ItemResponse(ItemBase):
     id: int
 
+    # Nesta linha foi necessário utilizar esta abordagem, pois a
+    # utilizada no artigo estava em depreciação
     model_config = ConfigDict(from_attributes=True)
 
