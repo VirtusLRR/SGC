@@ -4,7 +4,7 @@ from models import Item
 
 class ItemRepository:
     @staticmethod
-    def find_all(db: Session) -> list[Item]:
+    def find_all(db: Session) -> list[type[Item]]:
         return db.query(Item).all()
 
     @staticmethod
@@ -17,11 +17,11 @@ class ItemRepository:
         return item
 
     @staticmethod
-    def find_by_id(db: Session, id: int) -> Item:
+    def find_by_id(db: Session, id: int) -> Item | None:
         return db.query(Item).filter(Item.id == id).first()
 
     @staticmethod
-    def find_by_name(db: Session, name: str) -> Item:
+    def find_by_name(db: Session, name: str) -> Item | None:
         return db.query(Item).filter(Item.name == name).first()
 
     @staticmethod
