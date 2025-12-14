@@ -1,9 +1,9 @@
-from .orchestrator import OrquestrationOutputSchema
+from .orchestrator import OrchestratorOutputSchema
 from .revisor import RevisorOutputSchema
 from .structurer import StructurerOutputSchemaList
 
 __all__ = [
-    "OrquestrationOutputSchema",
+    "OrchestratorOutputSchema",
     "RevisorOutputSchema",
     "StructurerOutputSchemaList"
 ]

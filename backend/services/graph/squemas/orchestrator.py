@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
-class OrquestrationOutputSchema(BaseModel):
+class OrchestratorOutputSchema(BaseModel):
     next_agent: str
     orquestration_explaination: str
