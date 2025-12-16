@@ -6,7 +6,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-app.include_router(item_routes)
+app.include_router(item_routes, tags=["Item"])
 
 if __name__ == "__main__":
     import uvicorn
