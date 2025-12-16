@@ -17,8 +17,8 @@ def test_insert_item(db_session):
 
     assert farinha.id is not None
     
-    item = db_session.query(Item).filter_by(name="Farinha").first()
-    assert item.name == farinha.name
+    filtered_item = db_session.query(Item).filter_by(name="Farinha").first()
+    assert filtered_item.name == farinha.name
 
 def test_insert_recipe(db_session):
 
@@ -33,8 +33,8 @@ def test_insert_recipe(db_session):
 
     assert recipe.id is not None
 
-    obj = db_session.query(Recipe).filter_by(title="Bolo simples").first()
-    assert obj.title == recipe.title
+    filtered_recipe = db_session.query(Recipe).filter_by(title="Bolo simples").first()
+    assert filtered_recipe.title == recipe.title
     
 def test_insert_recipe_item(db_session):
 
@@ -65,11 +65,11 @@ def test_insert_recipe_item(db_session):
     assert farinha.id is not None
     assert len(recipe.recipe_itens) == 1
 
-    itens_name = [ri.item.name for ri in farinha.recipe_itens]
+    itens_name = [ri.item.name for ri in recipe.recipe_itens]
     assert "Farinha" in itens_name
     
-    amount = {ri.item.name: ri.amount for ri in farinha.recipe_itens}
+    amount = {ri.item.name: ri.amount for ri in recipe.recipe_itens}
     assert amount["Farinha"] == 200
 
-    obj = db_session.query(Recipe).filter_by(title="Bolo simples").first()
-    assert obj.title == recipe.title
+    filtered_recipe = db_session.query(Recipe).filter_by(title="Bolo simples").first()
+    assert filtered_recipe.title == recipe.title
