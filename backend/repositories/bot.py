@@ -4,7 +4,7 @@ from models import Bot
 
 class BotRepository:
     @staticmethod
-    def save(db: Session, bot: Bot) -> Message:
+    def save(db: Session, bot: Bot) -> Bot:
         db.add(bot)
         db.commit()
         db.refresh(bot)

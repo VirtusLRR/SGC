@@ -1,8 +1,14 @@
 from models import Item, Recipe, RecipeItem, Bot
 from database.database import engine, Base
+from routes import bot_routes
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(
+    title="Minha API",
+    version="1.0.0"
+)
+
+app.include_router(bot_routes, tags=["Bot"])
 
 @app.on_event("startup")
 def on_startup():

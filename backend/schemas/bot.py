@@ -1,14 +1,14 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Optional
-from datatime import datetime
+from datetime import datetime
 
 class BotBase(BaseModel):
-    Optional[str] = None
+    thread_id: Optional[str] = None
     user_message: str
     ai_message: Optional[str] = None
     create_at: Optional[datetime] = datetime.now()
 
-class BotRequest():
+class BotRequest(BaseModel):
     thread_id: Optional[str] = None
     user_message: str
 

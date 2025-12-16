@@ -1,4 +1,6 @@
-from langgraph.checkpoint.memory import InMemorySaver
+import sqlite3
+
+from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import StateGraph, END
 from .state import AgentState
 from .nodes import (
@@ -10,7 +12,8 @@ from .nodes import (
     web_node
 )
 
-memory = InMemorySaver()
+conn = sqlite3.connect("database/checkpoints.db", check_same_thread=False)
+memory = SqliteSaver(conn)
 
 builder = StateGraph(AgentState)
 
