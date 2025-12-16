@@ -12,7 +12,7 @@ from database.database import Base
 @pytest.fixture(scope="function")
 def db_session():
     
-    engine = create_engine("sqlite:///:memory:", echo=False)
+    engine = create_engine("sqlite:///tests/test.db", echo=False)
     
     TestingSessionLocal = sessionmaker(
         autocommit=False,
@@ -20,10 +20,11 @@ def db_session():
         bind=engine
     )
 
-    Base.metadata.create_all(bind=engine)
 
     db = TestingSessionLocal()
     try:
+        Base.metadata.drop_all(bind=engine)
+        Base.metadata.create_all(bind=engine)
         yield db  
     finally:
         db.close()
