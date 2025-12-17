@@ -1,17 +1,21 @@
-from ..tools.sql import sql_db_query, sql_db_schema, sql_db_write
+from ..tools.sql import add_recipe_tool
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.agents.structured_output import ToolStrategy
-from langchain.agents import create_agent
+from langchain_community.agent_toolkits import create_sql_agent
+from langchain_community.utilities import SQLDatabase
 from ..utils import load_prompt
-from pydantic import BaseModel
 from dotenv import load_dotenv
 
 load_dotenv()
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro", temperature=0)
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.5-pro",
+    temperature=0,
+    timeout=None,
+)
 
-sql_agent = create_agent(
-    model=llm,
-    system_prompt=load_prompt("sql"),
-    tools=[sql_db_query, sql_db_schema, sql_db_write],
+db = SQLDatabase.from_uri("sqlite:///database/sqlite.db")
+
+sql_agent = create_sql_agent(
+    llm, db=db, verbose= True, agent_type="tool-calling",
+    handle_parsing_errors=True, prefix_prompt=load_prompt("sql"), extra_tools=[add_recipe_tool]
 )

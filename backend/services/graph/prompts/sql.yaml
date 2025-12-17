@@ -74,6 +74,10 @@ sql_prompt: >
   
   7. **date('now')**: Use esta função para campos de data (create_at)
   
+  8. Caso não dê para fazer uma receita por falta de ingredientes, 
+  informe ao usuário quais faltam e sugira novas receitas que existem no banco de dados 
+  e tem itens disponíveis para sua confecção.
+  
   ### EXEMPLOS DE USO:
 
   ## CONSULTAS (SELECT)
