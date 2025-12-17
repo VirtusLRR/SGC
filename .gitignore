@@ -6,4 +6,5 @@ __pycache__/
 backend/.env
 **sqlite.db
 **checkpoints.db
+**test.db
 
