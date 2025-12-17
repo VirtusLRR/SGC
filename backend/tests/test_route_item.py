@@ -39,6 +39,42 @@ def test_create_item(client, payload):
 @pytest.mark.parametrize(
     "payload",
     [
+        {"price": 1500.0, "measure_unity": "Unity", "amount": 10},
+    ]
+)
+def test_create_item_missign_mandatory_args(client, payload):
+    response = client.post("/api/items", json=payload)
+
+    assert response.status_code == 422
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"name": "", "price": 1500.0, "measure_unity": "Unity", "amount": 10},
+        {"name": "Notebook", "price": 1500.0, "measure_unity": "", "amount": 10},
+    ]
+)
+def test_create_item_with_empty_mandatory_args(client, payload):
+    response = client.post("/api/items", json=payload)
+
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Campo obrigatório vazio";
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"name": "Notebook", "price": -1, "measure_unity": "Unity", "amount": 10},
+    ]
+)
+def test_create_item_illegal_price(client, payload):
+    response = client.post("/api/items", json=payload)
+
+    assert response.status_code == 400
+    assert response.json()["detail"] == "O preço deve ser maior que zero"
+
+@pytest.mark.parametrize(
+    "payload",
+    [
         {"name": "Notebook", "price": 1500.0, "measure_unity": "Unity", "amount": 10},
         {"name": "Mouse", "price": 30.50, "measure_unity": "Unity", "amount": 10},
     ]
@@ -172,14 +208,23 @@ def test_delete_empty_item(client):
     assert response.json()["detail"] == "Item não encontrado"
 
 
-@pytest.mark.parametrize(
-    "payload",
-    [
-        {"name": "Notebook", "price": 1500.0, "measure_unity": "Unity", "amount": 10},
-        {"name": "Mouse", "price": 30.50, "measure_unity": "Unity", "amount": 10},
-    ]
-)
-def test_update_empty_item(client, payload):
-    response = client.put("/api/items/1", json=payload)
-    assert response.status_code == 404
-    assert response.json()["detail"] == "Item não encontrado"
+def test_update_amount_under_0(client):
+    notebook = {"name": "Notebook", "price": 1500.0, "measure_unity": "Unity", "amount": 10},
+    client.post("/api/items", json=notebook)
+    updated_notebook = {"name": "Notebook", "price": 1500.0, "measure_unity": "Unity", "amount": -1}
+    response = client.put("/api/items/1", json=updated_notebook)
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Consumindo mais produto do que o disponível"
+
+def test_update_with_empty_mandatory_args(client):
+    notebook = {"name": "Notebook", "price": 1500.0, "measure_unity": "Unity", "amount": 10}
+    client.post("/api/items", json=notebook)
+    updated_notebook = {"name": "", "price": 1500.0, "measure_unity": "Unity", "amount": 10}
+    response = client.put("/api/items/1", json=updated_notebook)
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Campo obrigatório vazio"
+
+    updated_notebook = {"name": "Notebook", "price": 1500.0, "measure_unity": "", "amount": 10}
+    response = client.put("/api/items/1", json=updated_notebook)
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Campo obrigatório vazio"
