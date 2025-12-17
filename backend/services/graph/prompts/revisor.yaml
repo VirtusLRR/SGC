@@ -12,10 +12,11 @@ revisor_prompt: >
   A resposta SQL encontrou a receita E verificou os ingredientes no estoque
   A resposta SQL listou os produtos/itens solicitados
   A resposta SQL informou quantidades, preços ou disponibilidade
+  A resposta SQL informou que faltam ingredientes E sugeriu receitas alternativas disponíveis
   
   ### CRITÉRIOS PARA BUSCAR NA WEB (next_agent: WEB):
   
-  A resposta SQL diz que NÃO ENCONTROU a receita no banco de dados
+  A resposta SQL diz que NÃO ENCONTROU a receita no banco de dados, e não sugeriu alternativas
   A resposta SQL retornou erro ou resultado vazio
   A resposta SQL indica que o produto/receita não existe no sistema
   O usuário pediu informações externas (preços de mercado, notícias, etc)
@@ -32,22 +33,55 @@ revisor_prompt: >
   Resposta SQL: "Temos 10 unidades de tomate no estoque"
   Decisão: FINALIZAR (pergunta respondida!)
   
-  **Exemplo 3 - WEB:**
+  **Exemplo 3 - FINALIZAR (caso crítico - resposta com alternativas):**
+  Pergunta: "Consigo fazer risoto de camarão?"
+  Resposta SQL: "Infelizmente NÃO é possível fazer risoto de camarão. Faltam: arroz arbóreo (300g), camarão (400g)... Mas posso sugerir: 1. Torta Banoffee 2. Brigadeiro..."
+  Decisão: FINALIZAR (resposta COMPLETA! Informou que não pode fazer, listou o que falta E sugeriu alternativas disponíveis!)
+  
+  **Exemplo 4 - FINALIZAR (resposta detalhada com sugestões):**
+  Pergunta: "Posso fazer pizza de calabresa?"
+  Resposta SQL: " Infelizmente NÃO é possível fazer 'pizza de calabresa' no momento.\n\nFaltam os seguintes ingredientes:\n  - calabresa: necessário 200g, disponível 0g\n  - massa de pizza: necessário 1unidade, disponível 0unidades\n\n🔄 Mas posso sugerir estas receitas alternativas que você PODE fazer com os ingredientes disponíveis:\n\n1. torta banoffee - torta clássica inglesa\n2. pavê de banana - sobremesa cremosa\n\nGostaria de saber mais?"
+  Decisão: FINALIZAR (resposta PERFEITA! Tem tudo: falta de ingredientes + sugestões + pergunta se quer saber mais!)
+  
+  **Exemplo 5 - FINALIZAR (mesmo com emoji e formatação):**
+  Pergunta: "Tem como fazer macarrão carbonara?"
+  Resposta SQL: "Infelizmente NÃO é possível fazer 'macarrão carbonara' no momento.\n\nFaltam os seguintes ingredientes:\n  - bacon: necessário 150g, disponível 0g\n  - ovos: necessário 2unidade, disponível 0unidade\n\nMas posso sugerir estas receitas alternativas que você PODE fazer com os ingredientes disponíveis:\n\n1. brigadeiro de banana com doce de leite\n2. torta banoffee\n3. pavê de banana\n\nGostaria de saber mais sobre alguma dessas receitas?"
+  Decisão: FINALIZAR (resposta COMPLETA com sugestões!)
+  
+  **Exemplo 6 - FINALIZAR (variação de texto):**
+  Pergunta: "Dá pra fazer lasanha?"
+  Resposta SQL: "Não é possível fazer lasanha agora. Faltam massa de lasanha, molho de tomate e queijo. Mas você pode fazer: torta banoffee, brigadeiro de banana, pavê. Quer saber mais sobre alguma?"
+  Decisão: FINALIZAR (mesmo com texto diferente, tem tudo: falta + alternativas = COMPLETO!)
+  
+  **Exemplo 7 - WEB (SEM sugestões):**
   Pergunta: "Receita de lasanha de berinjela"
   Resposta SQL: "Não encontrei receita de lasanha de berinjela no banco de dados"
-  Decisão: WEB (receita não está cadastrada, buscar na web)
+  Decisão: WEB (receita não está cadastrada E NÃO tem sugestões = buscar na web)
   Query: "receita de lasanha de berinjela com ingredientes"
   
-  **Exemplo 4 - WEB:**
+  **Exemplo 8 - WEB (erro/vazio):**
   Pergunta: "Como fazer bolo de chocolate?"
   Resposta SQL: "Erro: tabela recipes retornou vazio para 'bolo de chocolate'"
-  Decisão: WEB (não tem no banco, buscar online)
+  Decisão: WEB (erro no banco = buscar online)
   Query: "receita bolo de chocolate"
+  
+  **Exemplo 9 - WEB (falta ingredientes MAS sem sugestões):**
+  Pergunta: "Consigo fazer strogonoff?"
+  Resposta SQL: "Não é possível fazer strogonoff. Faltam: frango, creme de leite, champignon."
+  Decisão: WEB (informou falta MAS NÃO sugeriu alternativas = incompleto = buscar receita na web)
   
   ### FORMATO DE RESPOSTA:
   next_agent: <FINALIZAR ou WEB>
   query_web: <sua query de pesquisa web OU "N/A" se for FINALIZAR>
   
-  ### REGRA CRÍTICA:
-  Se a resposta SQL forneceu todas as informações solicitadas pelo usuário, SEMPRE escolha FINALIZAR.
-  NÃO busque na web se a resposta já está completa!
+  ### REGRAS CRÍTICAS:
+  
+  1. Se a resposta SQL forneceu todas as informações solicitadas pelo usuário, SEMPRE escolha FINALIZAR.
+  
+  2. NÃO busque na web se a resposta já está completa!
+  
+  3. Se a resposta SQL contém "Infelizmente NÃO é possível fazer" E lista ingredientes faltantes E sugere receitas alternativas = RESPOSTA COMPLETA = FINALIZAR!
+  
+  4. NÃO vá para WEB apenas porque a resposta é negativa. Se o SQL informou que não pode fazer MAS explicou o porquê e deu alternativas = FINALIZAR!
+  
+  5. Só vá para WEB se a resposta do SQL for vazia, erro, ou "não encontrei no banco de dados" SEM sugestões alternativas.

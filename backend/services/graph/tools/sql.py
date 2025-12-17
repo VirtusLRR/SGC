@@ -1,9 +1,135 @@
 from langchain.tools import tool
-from sqlalchemy import inspect, text
-from database.database import engine, SessionLocal
+from sqlalchemy import func
+from database.database import SessionLocal
 from models.recipe import Recipe
 from models.recipe_item import RecipeItem
 from models.item import Item
+
+
+@tool
+def check_recipe_availability(recipe_name: str) -> str:
+    """
+    Verifica se uma receita pode ser feita com os ingredientes disponíveis no estoque.
+    Retorna quais ingredientes faltam e sugere receitas alternativas se houver falta.
+
+    Use esta ferramenta SEMPRE que o usuário perguntar:
+    - "Consigo fazer X?"
+    - "Posso fazer Y?"
+    - "Dá pra fazer Z?"
+    - "Tem como fazer W?"
+
+    Args:
+        recipe_name: Nome da receita que o usuário quer fazer
+
+    Returns:
+        String com status de disponibilidade, lista de ingredientes faltantes e sugestões de receitas alternativas
+    """
+    db = SessionLocal()
+
+    try:
+        recipe = db.query(Recipe).filter(
+            func.lower(Recipe.title).like(f'%{recipe_name.lower()}%')
+        ).first()
+
+        if not recipe:
+            return f"Receita '{recipe_name}' não encontrada no banco de dados."
+
+        recipe_items = db.query(
+            Item.name,
+            RecipeItem.amount.label('necessario'),
+            Item.amount.label('estoque'),
+            Item.measure_unity
+        ).join(
+            RecipeItem, RecipeItem.item_id == Item.id
+        ).filter(
+            RecipeItem.recipe_id == recipe.id
+        ).all()
+
+        if not recipe_items:
+            return f"Receita '{recipe.title}' não tem ingredientes cadastrados."
+
+        faltando = []
+        disponiveis = []
+
+        for item in recipe_items:
+            if item.estoque < item.necessario:
+                faltando.append({
+                    'nome': item.name,
+                    'necessario': item.necessario,
+                    'disponivel': item.estoque,
+                    'unidade': item.measure_unity
+                })
+            else:
+                disponiveis.append({
+                    'nome': item.name,
+                    'quantidade': item.necessario,
+                    'unidade': item.measure_unity
+                })
+
+        if not faltando:
+            ingredientes_texto = ", ".join([
+                f"{d['quantidade']}{d['unidade']} de {d['nome']}"
+                for d in disponiveis
+            ])
+            return (
+                f"SIM! Você pode fazer '{recipe.title}'!\n\n"
+                f"Ingredientes disponíveis:\n{ingredientes_texto}"
+            )
+
+        receitas_alternativas = db.query(Recipe).filter(
+            Recipe.id != recipe.id
+        ).all()
+
+        alternativas_disponiveis = []
+
+        for alt_recipe in receitas_alternativas:
+            alt_items = db.query(
+                Item.amount,
+                RecipeItem.amount
+            ).join(
+                RecipeItem, RecipeItem.item_id == Item.id
+            ).filter(
+                RecipeItem.recipe_id == alt_recipe.id
+            ).all()
+
+            if all(item[0] >= item[1] for item in alt_items):
+                alternativas_disponiveis.append({
+                    'titulo': alt_recipe.title,
+                    'descricao': alt_recipe.description or ''
+                })
+
+                if len(alternativas_disponiveis) >= 3:
+                    break
+
+        faltando_texto = "\n".join([
+            f"  - {f['nome']}: necessário {f['necessario']}{f['unidade']}, disponível {f['disponivel']}{f['unidade']}"
+            for f in faltando
+        ])
+
+        resposta = (
+            f"Infelizmente NÃO é possível fazer '{recipe.title}' no momento.\n\n"
+            f"Faltam os seguintes ingredientes:\n{faltando_texto}\n"
+        )
+
+        if alternativas_disponiveis:
+            resposta += "\nMas posso sugerir estas receitas alternativas que você PODE fazer com os ingredientes disponíveis:\n\n"
+            for idx, alt in enumerate(alternativas_disponiveis, 1):
+                resposta += f"{idx}. {alt['titulo']}"
+                if alt['descricao']:
+                    resposta += f" - {alt['descricao']}"
+                resposta += "\n"
+            resposta += "\nGostaria de saber mais sobre alguma dessas receitas?"
+        else:
+            resposta += "\nInfelizmente não há receitas alternativas disponíveis no momento com os ingredientes do estoque."
+
+        return resposta
+
+    except Exception as e:
+        return f"Erro ao verificar disponibilidade: {str(e)}"
+
+    finally:
+        db.close()
+
 
 @tool
 def add_recipe_tool(nome: str, ingredientes: str, preparo: str, descricao: str = ""):

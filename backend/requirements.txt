@@ -10,3 +10,5 @@ langchain-google-genai==4.0.0
 langgraph-checkpoint-sqlite==3.0.1
 langchain-tavily==0.2.14
 pydantic==2.12.5
+pytest-bdd==8.1.0
+psycopg2-binary==2.9.11

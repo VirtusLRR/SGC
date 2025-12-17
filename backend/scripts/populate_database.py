@@ -201,14 +201,84 @@ def populate_database():
 7. sirva em forminhas de papel."""
         )
 
-        db.add_all([recipe1, recipe2, recipe3])
+        # Receita 4 - Risoto de Camarão (sem ingredientes disponíveis)
+        recipe4 = Recipe(
+            title="risoto de camarão",
+            description="risoto cremoso com camarões frescos e vinho branco",
+            steps="""1. em uma panela, aqueça o azeite e refogue a cebola até ficar transparente.
+2. adicione o alho e refogue por mais 1 minuto.
+3. acrescente o arroz arbóreo e mexa bem até os grãos ficarem nacarados.
+4. adicione o vinho branco e deixe evaporar.
+5. aos poucos, adicione o caldo quente, mexendo sempre até o arroz absorver o líquido.
+6. quando o arroz estiver quase pronto, adicione os camarões limpos.
+7. finalize com manteiga, queijo parmesão ralado e salsinha picada.
+8. sirva imediatamente."""
+        )
+
+        db.add_all([recipe1, recipe2, recipe3, recipe4])
         db.commit()
 
         db.refresh(recipe1)
         db.refresh(recipe2)
         db.refresh(recipe3)
+        db.refresh(recipe4)
 
-        print(f"3 receitas criadas!")
+        print(f"4 receitas criadas!")
+
+        print("\nCriando ingredientes para risoto (indisponíveis)...")
+
+        # Ingredientes para o risoto que NÃO estão disponíveis (quantidade = 0)
+        risoto_items = [
+            Item(
+                name="arroz arbóreo",
+                measure_unity="grama",
+                amount=0,  # INDISPONÍVEL
+                description="arroz para risoto",
+                price=12.00,
+                expiration_date=datetime.now().date() + timedelta(days=365)
+            ),
+            Item(
+                name="camarão",
+                measure_unity="grama",
+                amount=0,  # INDISPONÍVEL
+                description="camarões limpos e frescos",
+                price=45.00,
+                expiration_date=datetime.now().date() + timedelta(days=3)
+            ),
+            Item(
+                name="vinho branco",
+                measure_unity="mililitro",
+                amount=0,  # INDISPONÍVEL
+                description="vinho branco seco para culinária",
+                price=25.00,
+                expiration_date=datetime.now().date() + timedelta(days=730)
+            ),
+            Item(
+                name="caldo de legumes",
+                measure_unity="mililitro",
+                amount=0,  # INDISPONÍVEL
+                description="caldo de legumes caseiro",
+                price=8.00,
+                expiration_date=datetime.now().date() + timedelta(days=5)
+            ),
+            Item(
+                name="queijo parmesão",
+                measure_unity="grama",
+                amount=0,  # INDISPONÍVEL
+                description="queijo parmesão ralado",
+                price=18.00,
+                expiration_date=datetime.now().date() + timedelta(days=30)
+            ),
+        ]
+
+        db.add_all(risoto_items)
+        db.commit()
+
+        for item in risoto_items:
+            db.refresh(item)
+
+        items.extend(risoto_items)
+        print(f"{len(risoto_items)} ingredientes do risoto criados (todos indisponíveis)!")
 
         print("\nVinculando ingredientes às receitas...")
 
@@ -242,7 +312,16 @@ def populate_database():
             RecipeItem(recipe_id=recipe3.id, item_id=items[11].id, amount=100),
         ]
 
-        all_recipe_items = recipe1_items + recipe2_items + recipe3_items
+        recipe4_items = [
+            RecipeItem(recipe_id=recipe4.id, item_id=items[17].id, amount=300),
+            RecipeItem(recipe_id=recipe4.id, item_id=items[18].id, amount=400),
+            RecipeItem(recipe_id=recipe4.id, item_id=items[19].id, amount=150),
+            RecipeItem(recipe_id=recipe4.id, item_id=items[20].id, amount=1000),
+            RecipeItem(recipe_id=recipe4.id, item_id=items[21].id, amount=50),
+            RecipeItem(recipe_id=recipe4.id, item_id=items[3].id, amount=30),
+        ]
+
+        all_recipe_items = recipe1_items + recipe2_items + recipe3_items + recipe4_items
         db.add_all(all_recipe_items)
         db.commit()
 
@@ -253,12 +332,13 @@ def populate_database():
         print("="*50)
         print(f"\nResumo:")
         print(f"   - {len(items)} itens criados")
-        print(f"   - 3 receitas criadas")
+        print(f"   - 4 receitas criadas")
         print(f"   - {len(all_recipe_items)} ingredientes vinculados")
         print("\nReceitas disponíveis:")
-        print(f"   1. {recipe1.title}")
-        print(f"   2. {recipe2.title}")
-        print(f"   3. {recipe3.title}")
+        print(f"   1. {recipe1.title} (ingredientes disponíveis)")
+        print(f"   2. {recipe2.title} (ingredientes disponíveis)")
+        print(f"   3. {recipe3.title} (ingredientes disponíveis)")
+        print(f"   4. {recipe4.title} (ingredientes INDISPONÍVEIS)")
 
     except Exception as e:
         print(f"\nErro ao popular banco de dados: {str(e)}")

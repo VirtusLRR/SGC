@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro", temperature=0.3)
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro", temperature=0)
 
 revisor_agent = create_agent(
     model=llm,

@@ -31,5 +31,9 @@ def main():
         }, thread):
             print(s)
 
+        # response = graph.invoke({'user_input':msg}, {"configurable": {"thread_id": 1}})
+        #
+        # print(response)
+
 if __name__ == "__main__":
     main()

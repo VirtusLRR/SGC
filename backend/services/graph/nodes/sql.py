@@ -8,7 +8,13 @@ def sql_node(state : AgentState):
     if isinstance(response, dict):
         if 'output' in response:
             if isinstance(response['output'], list) and len(response['output']) > 0:
-                sql_response = response['output'][0].get('text', str(response['output']))
+                parts = []
+                for item in response['output']:
+                    if isinstance(item, dict) and 'text' in item:
+                        parts.append(item['text'])
+                    elif isinstance(item, str):
+                        parts.append(item)
+                sql_response = ''.join(parts) if parts else str(response['output'])
             else:
                 sql_response = response['output']
         else:
