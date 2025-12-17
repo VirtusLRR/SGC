@@ -4,6 +4,7 @@ from langchain_community.agent_toolkits import create_sql_agent
 from langchain_community.utilities import SQLDatabase
 from ..utils import load_prompt
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
@@ -12,7 +13,14 @@ llm = ChatGoogleGenerativeAI(
     temperature=0,
 )
 
-db = SQLDatabase.from_uri("sqlite:///database/sqlite.db")
+DB_USER = os.getenv("POSTGRES_USER")
+DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+DB_NAME = os.getenv("POSTGRES_DB")
+DB_HOST = os.getenv("POSTGRES_HOST")
+DB_PORT = os.getenv("POSTGRES_PORT")
+
+DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+db = SQLDatabase.from_uri(DATABASE_URL)
 
 sql_agent = create_sql_agent(
     llm, db=db, verbose=False, agent_type="tool-calling",

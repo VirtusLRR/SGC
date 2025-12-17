@@ -3,7 +3,7 @@ __pycache__/
 .pytest_cache/
 *.pyc
 **/.idea/
-backend/.env
+.env
 **sqlite.db
 **checkpoints.db
 **test.db
