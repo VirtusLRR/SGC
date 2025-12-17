@@ -6,15 +6,10 @@ from repositories import ItemRepository
 from schemas import ItemResponse, ItemRequest
 
 class ItemController:
+
     @staticmethod
     def create(request: ItemRequest, db: Session = Depends(get_db)):
-        if request.price < 0:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O preço deve ser maior que zero")
-        if request.name == "":
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Campo obrigatório vazio")
-        if request.measure_unity == "":
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Campo obrigatório vazio")
-
+        default_validators(request)
         item = ItemRepository.save(db, Item(**request.model_dump()))
         return ItemResponse.model_validate(item)
 
@@ -48,17 +43,24 @@ class ItemController:
 
     @staticmethod
     def update(id: int, request: ItemRequest, db: Session = Depends(get_db)):
-        if request.price < 0:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O preço deve ser maior que zero")
-        if request.name == "":
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Campo obrigatório vazio")
-        if request.measure_unity == "":
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Campo obrigatório vazio")
-        if request.amount < 0:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Consumindo mais produto do que o disponível")
+        default_validators(request)
         if not ItemRepository.exists_by_id(db, id):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Item não encontrado"
             )
+
         item = ItemRepository.save(db, Item(id=id, **request.model_dump()))
         return ItemResponse.model_validate(item)
+
+
+def default_validators(request: ItemRequest):
+    if request.price < 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O preço deve ser maior que zero")
+    if request.name == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Campo obrigatório vazio")
+    if request.measure_unity == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Campo obrigatório vazio")
+    if request.amount < 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Consumindo mais produto do que o disponível")
+
+
