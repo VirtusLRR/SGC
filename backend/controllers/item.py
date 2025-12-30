@@ -41,7 +41,7 @@ class ItemController:
             )
         ItemRepository.delete_by_id(db, id)
         return JSONResponse(
-            status_code=status.HTTP_204_OK, 
+            status_code=status.HTTP_204_NO_CONTENT, 
             content={"message": "Item removido com sucesso", "id": id}
         )
 

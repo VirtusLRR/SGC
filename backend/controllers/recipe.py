@@ -40,8 +40,8 @@ class RecipeController:
             )
         RecipeRepository.delete_by_id(db, id)
         return JSONResponse(
-            status_code=status.HTTP_204_OK, 
-            content={"message": "Receita removido com sucesso", "id": id}
+            status_code=status.HTTP_204_NO_CONTENT, 
+            content={"message": "Receita removida com sucesso", "id": id}
         )
 
     @staticmethod
