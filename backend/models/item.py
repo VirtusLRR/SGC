@@ -21,3 +21,9 @@ class Item(Base):
         back_populates="item",
         cascade="all, delete-orphan"
     )
+
+    transactions = relationship(
+        "Transaction",
+        back_populates="item",
+        cascade="all, delete-orphan"
+    )
