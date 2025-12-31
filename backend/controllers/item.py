@@ -58,7 +58,7 @@ class ItemController:
 
     @staticmethod
     def get_low_stock_items(threshold: int, db: Session = Depends(get_db)):
-        items = ItemRepository.get_low_stock_items(db, threshold)
+        items = ItemRepository.find_low_stock_items(db, threshold)
         return [ItemResponse.model_validate(item) for item in items]
 
 
