@@ -1,3 +1,4 @@
+
 from sqlalchemy.orm import Session
 
 from models import Recipe
@@ -97,7 +98,7 @@ class RecipeRepository:
 
         for recipe in recipes:
             can_make = True
-            missing_items = find
+            missing_items = []
             for recipe_item in recipe.recipe_itens:
                 item = recipe_item.item
                 if item.amount < recipe_item.amount:
