@@ -1,3 +1,4 @@
+from typing import List, Dict, Any
 from fastapi import Depends, HTTPException, status, Response
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
@@ -50,3 +51,58 @@ class RecipeController:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Receita não encontrada")
         recipe = RecipeRepository.save(db, Recipe(id=id, **request.model_dump()))
         return RecipeResponse.model_validate(recipe)
+    
+    @staticmethod
+    def get_recipe_cost(recipe_id: int, db: Session = Depends(get_db)) -> Dict[str, Any]:
+        """
+        Retorna o custo detalhado.
+        Como não usamos Schema, o retorno é um dicionário livre.
+        """
+        try:
+            result = RecipeRepository.find_recipe_cost(db, recipe_id)
+            
+            if not result:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND, 
+                    detail=f"Receita com id {recipe_id} não encontrada."
+                )
+            
+            return result
+            
+        except HTTPException as he:
+            raise he
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+                detail=str(e)
+            )
+
+    @staticmethod
+    def get_all_recipes_with_cost(db: Session = Depends(get_db)) -> List[Dict[str, Any]]:
+        try:
+            return RecipeRepository.find_all_recipes_with_cost(db)
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+                detail=str(e)
+            )
+
+    @staticmethod
+    def get_feasible_recipes(db: Session = Depends(get_db)) -> List[Dict[str, Any]]:
+        try:
+            return RecipeRepository.find_feasible_recipes(db)
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+                detail=str(e)
+            )
+
+    @staticmethod
+    def get_most_used_ingredients(limit: int = 10, db: Session = Depends(get_db)) -> List[Dict[str, Any]]:
+        try:
+            return RecipeRepository.find_most_used_ingredients(db, limit)
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+                detail=str(e)
+            )
