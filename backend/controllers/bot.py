@@ -11,6 +11,7 @@ import uuid
 class BotController:
     @staticmethod
     async def process_message(request: BotRequest, db: Session = Depends(get_db)):
+        """Processa a mensagem do usuário, interage com o grafo e salva a resposta."""
         user_msg = request.user_message.strip()
         if request.thread_id is not None:
             thread_id = request.thread_id
@@ -39,6 +40,7 @@ class BotController:
 
     @staticmethod
     def get_all_messages(db: Session = Depends(get_db)):
+        """Retorna todas as mensagens trocadas com o bot."""
         messages = BotRepository.get_messages(db)
         if not messages:
             raise HTTPException(
