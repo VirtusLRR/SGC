@@ -1,3 +1,4 @@
+from typing import List, Dict, Any #####
 from fastapi import Depends, HTTPException, status, Response
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
@@ -65,6 +66,58 @@ class ItemController:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
         )
+    
+    @staticmethod
+    def get_items_near_expiration(days: int, db: Session = Depends(get_db)):
+        try:
+            items = ItemRepository.find_items_near_expiration(db, days)
+            return [ItemResponse.model_validate(item) for item in items]
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
+
+    @staticmethod
+    def get_expired_items(db: Session = Depends(get_db)):
+        try:
+            items = ItemRepository.find_expired_items(db)
+            return [ItemResponse.model_validate(item) for item in items]
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
+
+    @staticmethod
+    def get_total_inventory_value(db: Session = Depends(get_db)):
+        try:
+            total_value = ItemRepository.find_total_inventory_value(db)
+            
+            return {"total_value": total_value}
+            
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+            )
+    
+    @staticmethod
+    def get_inventory_summary(db: Session = Depends(get_db)) -> Dict[str, Any]:
+        
+        try:
+            return ItemRepository.find_inventory_summary(db)
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+            )
+
+    @staticmethod
+    def get_items_by_value_ranking(limit: int = 10, db: Session = Depends(get_db)) -> List[Dict[str, Any]]:
+        
+        try:
+            return ItemRepository.find_items_by_value_ranking(db, limit)
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+            )
 
 
 def default_validators(request: ItemRequest):
