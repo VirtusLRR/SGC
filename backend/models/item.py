@@ -12,6 +12,7 @@ class Item(Base):
     amount = Column(Numeric, nullable=False)
     description = Column(Text)
     price = Column(Numeric, default=0)
+    price_unit = Column(String, default="unidade")
     expiration_date = Column(Date)
     create_at = Column(Date, default=datetime.now(), nullable=False)
     update_at = Column(Date)
