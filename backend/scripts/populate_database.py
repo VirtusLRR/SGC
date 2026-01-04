@@ -30,6 +30,7 @@ def populate_database():
                 amount=12,
                 description="bananas nanicas maduras",
                 price=0.50,
+                price_unit="unidade",
                 expiration_date=datetime.now().date() + timedelta(days=5)
             ),
             Item(
@@ -38,6 +39,7 @@ def populate_database():
                 amount=800,
                 description="doce de leite cremoso",
                 price=15.00,
+                price_unit="kg",
                 expiration_date=datetime.now().date() + timedelta(days=180)
             ),
             Item(
@@ -46,6 +48,7 @@ def populate_database():
                 amount=400,
                 description="biscoito tipo maisena triturado",
                 price=5.00,
+                price_unit="pacote",
                 expiration_date=datetime.now().date() + timedelta(days=90)
             ),
             Item(
@@ -54,6 +57,7 @@ def populate_database():
                 amount=200,
                 description="manteiga sem sal",
                 price=8.00,
+                price_unit="pacote",
                 expiration_date=datetime.now().date() + timedelta(days=30)
             ),
             Item(
@@ -62,6 +66,7 @@ def populate_database():
                 amount=1000,
                 description="creme de leite fresco",
                 price=6.00,
+                price_unit="litro",
                 expiration_date=datetime.now().date() + timedelta(days=15)
             ),
             Item(
@@ -70,6 +75,7 @@ def populate_database():
                 amount=2000,
                 description="açúcar refinado",
                 price=4.50,
+                price_unit="kg",
                 expiration_date=datetime.now().date() + timedelta(days=365)
             ),
             Item(
@@ -78,6 +84,7 @@ def populate_database():
                 amount=800,
                 description="leite condensado",
                 price=7.00,
+                price_unit="kg",
                 expiration_date=datetime.now().date() + timedelta(days=180)
             ),
             Item(
@@ -86,6 +93,7 @@ def populate_database():
                 amount=2000,
                 description="leite integral",
                 price=5.00,
+                price_unit="litro",
                 expiration_date=datetime.now().date() + timedelta(days=7)
             ),
             Item(
@@ -94,6 +102,7 @@ def populate_database():
                 amount=500,
                 description="amido de milho (maisena)",
                 price=4.00,
+                price_unit="pacote",
                 expiration_date=datetime.now().date() + timedelta(days=365)
             ),
             Item(
@@ -102,6 +111,7 @@ def populate_database():
                 amount=12,
                 description="gemas de ovos",
                 price=0.60,
+                price_unit="unidade",
                 expiration_date=datetime.now().date() + timedelta(days=7)
             ),
             Item(
@@ -110,6 +120,7 @@ def populate_database():
                 amount=300,
                 description="biscoito tipo champanhe",
                 price=6.00,
+                price_unit="pacote",
                 expiration_date=datetime.now().date() + timedelta(days=90)
             ),
             Item(
@@ -118,6 +129,7 @@ def populate_database():
                 amount=400,
                 description="chocolate em pó ou cacau",
                 price=8.00,
+                price_unit="pacote",
                 expiration_date=datetime.now().date() + timedelta(days=365)
             ),
             Item(
@@ -126,6 +138,7 @@ def populate_database():
                 amount=100,
                 description="canela em pó",
                 price=3.50,
+                price_unit="pacote",
                 expiration_date=datetime.now().date() + timedelta(days=365)
             ),
             Item(
@@ -134,6 +147,7 @@ def populate_database():
                 amount=300,
                 description="nozes",
                 price=15.00,
+                price_unit="kg",
                 expiration_date=datetime.now().date() + timedelta(days=90)
             ),
             Item(
@@ -142,6 +156,7 @@ def populate_database():
                 amount=1000,
                 description="farinha de trigo",
                 price=5.00,
+                price_unit="kg",
                 expiration_date=datetime.now().date() + timedelta(days=365)
             ),
             Item(
@@ -150,6 +165,7 @@ def populate_database():
                 amount=50,
                 description="extrato de baunilha",
                 price=12.00,
+                price_unit="mililitro",
                 expiration_date=datetime.now().date() + timedelta(days=365)
             ),
             Item(
@@ -158,6 +174,7 @@ def populate_database():
                 amount=5,
                 description="limões",
                 price=0.80,
+                price_unit="unidade",
                 expiration_date=datetime.now().date() + timedelta(days=7)
             ),
         ]
@@ -237,6 +254,7 @@ def populate_database():
                 amount=0,
                 description="arroz para risoto",
                 price=12.00,
+                price_unit="kg",
                 expiration_date=datetime.now().date() + timedelta(days=365)
             ),
             Item(
@@ -245,6 +263,7 @@ def populate_database():
                 amount=0,
                 description="camarões limpos e frescos",
                 price=45.00,
+                price_unit="kg",
                 expiration_date=datetime.now().date() + timedelta(days=3)
             ),
             Item(
@@ -253,6 +272,7 @@ def populate_database():
                 amount=0,
                 description="vinho branco seco para culinária",
                 price=25.00,
+                price_unit="litro",
                 expiration_date=datetime.now().date() + timedelta(days=730)
             ),
             Item(
@@ -261,6 +281,7 @@ def populate_database():
                 amount=0,
                 description="caldo de legumes caseiro",
                 price=8.00,
+                price_unit="litro",
                 expiration_date=datetime.now().date() + timedelta(days=5)
             ),
             Item(
@@ -269,6 +290,7 @@ def populate_database():
                 amount=0,
                 description="queijo parmesão ralado",
                 price=18.00,
+                price_unit="kg",
                 expiration_date=datetime.now().date() + timedelta(days=30)
             ),
         ]
@@ -337,7 +359,7 @@ def populate_database():
                 description="compra inicial de estoque",
                 create_at=(datetime.now() - timedelta(days=5)).date(),
                 amount=20,
-                price=10.00
+                price=0.50
             ),
             Transaction(
                 item_id=items[0].id,
@@ -377,7 +399,7 @@ def populate_database():
                 description="compra inicial de estoque",
                 create_at=(datetime.now() - timedelta(days=15)).date(),
                 amount=500,
-                price=20.00
+                price=8.00
             ),
             Transaction(
                 item_id=items[3].id,
@@ -401,7 +423,7 @@ def populate_database():
                 description="venda direta ao cliente",
                 create_at=(datetime.now() - timedelta(days=3)).date(),
                 amount=180,
-                price=32.40
+                price=28.80
             ),
             Transaction(
                 item_id=items[5].id,
@@ -409,7 +431,7 @@ def populate_database():
                 description="compra inicial de estoque",
                 create_at=(datetime.now() - timedelta(days=20)).date(),
                 amount=5000,
-                price=11.25
+                price=4.50
             ),
             Transaction(
                 item_id=items[5].id,
@@ -425,7 +447,7 @@ def populate_database():
                 description="compra inicial de estoque",
                 create_at=(datetime.now() - timedelta(days=3)).date(),
                 amount=3000,
-                price=15.00
+                price=5.00
             ),
             Transaction(
                 item_id=items[7].id,
@@ -449,7 +471,7 @@ def populate_database():
                 description="compra inicial de estoque",
                 create_at=(datetime.now() - timedelta(days=30)).date(),
                 amount=1000,
-                price=20.00
+                price=8.00
             ),
             Transaction(
                 item_id=items[11].id,
@@ -473,7 +495,7 @@ def populate_database():
                 description="compra inicial de estoque",
                 create_at=(datetime.now() - timedelta(days=25)).date(),
                 amount=1590,
-                price=21.00
+                price=7.00
             ),
             Transaction(
                 item_id=items[6].id,
@@ -518,7 +540,6 @@ def populate_database():
         raise
     finally:
         db.close()
-
 
 if __name__ == "__main__":
     populate_database()
