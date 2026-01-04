@@ -101,7 +101,6 @@ class TransactionController:
         Pode filtrar por tipo ('entrada' ou 'saida') e definir um limite.
         """
         try:
-            
             results = TransactionRepository.find_most_transacted_items(
                 db, 
                 order_type, 
@@ -109,7 +108,6 @@ class TransactionController:
             )
             
             return results
-            
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
