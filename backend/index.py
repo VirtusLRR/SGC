@@ -1,6 +1,6 @@
 from models import Item, Recipe, RecipeItem, Bot, Transaction
 from database.database import engine, Base
-from routes import bot_routes, recipe_routes, item_routes, transaction_routes
+from routes import bot_routes, recipe_routes, item_routes, transaction_routes, dashboard_routes
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(
-    title="Minha API",
+    title="SGC - Sistema de Gerenciamento de Compras",
     version="1.0.0",
     lifespan=lifespan
 )
@@ -25,6 +25,7 @@ app.include_router(item_routes, tags=["Item"])
 app.include_router(recipe_routes, tags=["Recipe"])
 app.include_router(bot_routes, tags=["Bot"])
 app.include_router(transaction_routes, tags=["Transaction"])
+app.include_router(dashboard_routes, tags=["Dashboard"])
 
 
 if __name__ == "__main__":
