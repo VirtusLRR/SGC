@@ -3,7 +3,9 @@ from sqlalchemy import func, and_, desc
 from datetime import datetime, timedelta
 from decimal import Decimal
 
-from models import Transaction
+from models import Transaction, Item
+from utils.unit_converter import calculate_item_total_value
+
 
 class TransactionRepository:
     @staticmethod
@@ -50,13 +52,15 @@ class TransactionRepository:
             start_date: datetime = None,
             end_date: datetime = None
     ) -> dict:
-        """Resumo de entradas e saídas por período"""
+        """Resumo de entradas e saídas por período com conversão de unidades"""
         if not start_date:
             start_date = datetime.now() - timedelta(days=30)
         if not end_date:
             end_date = datetime.now()
 
-        transactions = db.query(Transaction).filter(
+        transactions = db.query(Transaction).join(
+            Item, Transaction.item_id == Item.id
+        ).filter(
             and_(
                 Transaction.create_at >= start_date.date(),
                 Transaction.create_at <= end_date.date()
@@ -71,13 +75,24 @@ class TransactionRepository:
         count_exits = 0
 
         for trans in transactions:
+            item = trans.item
+
+            price_to_use = trans.price if trans.price is not None else item.price
+
+            trans_value = calculate_item_total_value(
+                trans.amount,
+                price_to_use,
+                item.measure_unity,
+                item.price_unit
+            )
+
             if trans.order_type.lower() == 'entrada':
                 total_entries += trans.amount
-                value_entries += trans.amount * (trans.price or Decimal('0'))
+                value_entries += trans_value
                 count_entries += 1
-            elif trans.order_type.lower() == 'saida':
+            elif trans.order_type.lower() == 'saida' or trans.order_type.lower() == 'saída':
                 total_exits += trans.amount
-                value_exits += trans.amount * (trans.price or Decimal('0'))
+                value_exits += trans_value
                 count_exits += 1
 
         return {
@@ -107,33 +122,54 @@ class TransactionRepository:
             order_type: str = None,
             limit: int = 10
     ) -> list[dict]:
-        """Retorna os itens com mais transações (entradas ou saídas)"""
-        query = db.query(
-            Item.id,
-            Item.name,
-            func.count(Transaction.id).label('transaction_count'),
-            func.sum(Transaction.amount).label('total_amount'),
-            func.sum(Transaction.amount * Transaction.price).label('total_value')
-        ).join(
-            Item, Transaction.item_id == Item.id
-        )
+        """Retorna os itens com mais transações com conversão de unidades"""
+        query = db.query(Transaction).join(Item, Transaction.item_id == Item.id)
 
         if order_type:
             query = query.filter(Transaction.order_type == order_type)
 
-        results = query.group_by(
-            Item.id, Item.name
-        ).order_by(
-            desc('transaction_count')
-        ).limit(limit).all()
+        transactions = query.all()
+
+        item_stats = {}
+
+        for trans in transactions:
+            item = trans.item
+
+            if item.id not in item_stats:
+                item_stats[item.id] = {
+                    "item_id": item.id,
+                    "item_name": item.name,
+                    "transaction_count": 0,
+                    "total_amount": Decimal('0'),
+                    "total_value": Decimal('0')
+                }
+
+            item_stats[item.id]["transaction_count"] += 1
+            item_stats[item.id]["total_amount"] += trans.amount
+
+            price_to_use = trans.price if trans.price is not None else item.price
+
+            trans_value = calculate_item_total_value(
+                trans.amount,
+                price_to_use,
+                item.measure_unity,
+                item.price_unit
+            )
+            item_stats[item.id]["total_value"] += trans_value
+
+        results = sorted(
+            item_stats.values(),
+            key=lambda x: x["transaction_count"],
+            reverse=True
+        )[:limit]
 
         return [
             {
-                "item_id": r.id,
-                "item_name": r.name,
-                "transaction_count": r.transaction_count,
-                "total_amount": float(r.total_amount or 0),
-                "total_value": float(r.total_value or 0)
+                "item_id": r["item_id"],
+                "item_name": r["item_name"],
+                "transaction_count": r["transaction_count"],
+                "total_amount": float(r["total_amount"]),
+                "total_value": float(r["total_value"])
             }
             for r in results
         ]
@@ -172,33 +208,41 @@ class TransactionRepository:
 
     @staticmethod
     def find_average_transaction_value_by_item(db: Session) -> list[dict]:
-        """Retorna valor médio de transação por item"""
-        results = db.query(
-            Item.id,
-            Item.name,
-            func.avg(Transaction.price).label('avg_price'),
-            func.min(Transaction.price).label('min_price'),
-            func.max(Transaction.price).label('max_price'),
-            func.count(Transaction.id).label('transaction_count')
-        ).join(
-            Item, Transaction.item_id == Item.id
-        ).filter(
-            Transaction.price.isnot(None)
-        ).group_by(
-            Item.id, Item.name
-        ).all()
+        """Retorna valor médio de transação por item considerando conversão de unidades"""
+        items_with_transactions = db.query(Item).join(
+            Transaction, Item.id == Transaction.item_id
+        ).distinct().all()
 
-        return [
-            {
-                "item_id": r.id,
-                "item_name": r.name,
-                "avg_price": float(r.avg_price or 0),
-                "min_price": float(r.min_price or 0),
-                "max_price": float(r.max_price or 0),
-                "transaction_count": r.transaction_count
-            }
-            for r in results
-        ]
+        results = []
+
+        for item in items_with_transactions:
+            transactions = db.query(Transaction).filter(
+                Transaction.item_id == item.id
+            ).all()
+
+            prices = []
+            for trans in transactions:
+                price_to_use = trans.price if trans.price is not None else item.price
+
+                trans_value = calculate_item_total_value(
+                    trans.amount,
+                    price_to_use,
+                    item.measure_unity,
+                    item.price_unit
+                )
+                prices.append(trans_value)
+
+            if prices:
+                results.append({
+                    "item_id": item.id,
+                    "item_name": item.name,
+                    "avg_price": float(sum(prices) / len(prices)),
+                    "min_price": float(min(prices)),
+                    "max_price": float(max(prices)),
+                    "transaction_count": len(transactions)
+                })
+
+        return results
 
     @staticmethod
     def find_consumption_rate_by_item(
@@ -217,7 +261,7 @@ class TransactionRepository:
             Transaction, Item.id == Transaction.item_id
         ).filter(
             and_(
-                Transaction.order_type == 'saida',
+                Transaction.order_type.in_(['saida', 'saída']),
                 Transaction.create_at >= start_date.date()
             )
         ).group_by(
