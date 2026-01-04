@@ -106,21 +106,12 @@ class RecipeRepository:
         """Retorna receitas que podem ser feitas com o estoque atual"""
         recipes = db.query(Recipe).all()
         feasible = []
-
         for recipe in recipes:
             can_make = True
-            missing_items = []
             for recipe_item in recipe.recipe_itens:
                 item = recipe_item.item
                 if item.amount < recipe_item.amount:
                     can_make = False
-                    missing_items.append({
-                        "item_name": item.name,
-                        "required": float(recipe_item.amount),
-                        "available": float(item.amount),
-                        "missing": float(recipe_item.amount - item.amount)
-                    })
-
             if can_make:
                 recipe_cost = RecipeRepository.find_recipe_cost(db, recipe.id)
                 feasible.append({
@@ -128,7 +119,6 @@ class RecipeRepository:
                     "recipe_title": recipe.title,
                     "total_cost": recipe_cost['total_cost']
                 })
-
         return feasible
 
     @staticmethod
