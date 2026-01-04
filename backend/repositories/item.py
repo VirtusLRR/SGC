@@ -91,7 +91,7 @@ class ItemRepository:
     def find_inventory_summary(db: Session) -> dict:
         """Retorna resumo completo do estoque"""
         total_items = db.query(func.count(Item.id)).scalar()
-        total_value = ItemRepository.get_total_inventory_value(db)
+        total_value = ItemRepository.find_total_inventory_value(db)
 
         items_with_stock = db.query(func.count(Item.id)).filter(
             Item.amount > 0

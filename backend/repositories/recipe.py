@@ -87,7 +87,7 @@ class RecipeRepository:
         """Retorna todas as receitas com seus custos calculados"""
         recipes = db.query(Recipe).all()
         return [
-            RecipeRepository.get_recipe_cost(db, recipe.id)
+            RecipeRepository.find_recipe_cost(db, recipe.id)
             for recipe in recipes
         ]
 
@@ -112,7 +112,7 @@ class RecipeRepository:
                     })
 
             if can_make:
-                recipe_cost = RecipeRepository.get_recipe_cost(db, recipe.id)
+                recipe_cost = RecipeRepository.find_recipe_cost(db, recipe.id)
                 feasible.append({
                     "recipe_id": recipe.id,
                     "recipe_title": recipe.title,
