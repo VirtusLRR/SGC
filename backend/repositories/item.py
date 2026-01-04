@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 
 from models import Item
+from utils.unit_converter import calculate_item_total_value
 
 class ItemRepository:
     @staticmethod
@@ -81,11 +82,20 @@ class ItemRepository:
 
     @staticmethod
     def find_total_inventory_value(db: Session) -> Decimal:
-        """Retorna o valor total do estoque atual"""
-        result = db.query(
-            func.sum(Item.amount * Item.price)
-        ).scalar()
-        return result or Decimal('0')
+        """Retorna o valor total do estoque atual considerando conversão de unidades"""
+        items = db.query(Item).all()
+        total = Decimal('0')
+
+        for item in items:
+            item_value = calculate_item_total_value(
+                item.amount,
+                item.price,
+                item.measure_unity,
+                item.price_unit
+            )
+            total += item_value
+
+        return total
 
     @staticmethod
     def find_inventory_summary(db: Session) -> dict:
@@ -110,26 +120,25 @@ class ItemRepository:
 
     @staticmethod
     def find_items_by_value_ranking(db: Session, limit: int = 10) -> list[dict]:
-        """Retorna os N itens com maior valor em estoque (amount * price)"""
-        results = db.query(
-            Item.id,
-            Item.name,
-            Item.amount,
-            Item.price,
-            (Item.amount * Item.price).label('total_value')
-        ).filter(
-            Item.amount > 0
-        ).order_by(
-            (Item.amount * Item.price).desc()
-        ).limit(limit).all()
+        """Retorna os N itens com maior valor em estoque considerando conversão de unidades"""
+        items = db.query(Item).filter(Item.amount > 0).all()
 
-        return [
-            {
-                "id": r.id,
-                "name": r.name,
-                "amount": float(r.amount),
-                "price": float(r.price),
-                "total_value": float(r.total_value)
-            }
-            for r in results
-        ]
+        items_with_value = []
+        for item in items:
+            total_value = calculate_item_total_value(
+                item.amount,
+                item.price,
+                item.measure_unity,
+                item.price_unit
+            )
+            items_with_value.append({
+                "id": item.id,
+                "name": item.name,
+                "amount": float(item.amount),
+                "price": float(item.price),
+                "price_unit": item.price_unit,
+                "total_value": float(total_value)
+            })
+
+        items_with_value.sort(key=lambda x: x['total_value'], reverse=True)
+        return items_with_value[:limit]
