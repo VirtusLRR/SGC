@@ -52,10 +52,10 @@ class BotController:
             thread_id = str(uuid.uuid4())
 
         extractor_response = optical_extractor(image_b64)
-        extractor_answer = response.get("final_answer")
+        extractor_answer = extractor_response.get("final_answer")
         extractor_message = parse_final_answer(extractor_answer)
 
-        if ai_message != "": 
+        if extractor_message != "": 
             response = graph.invoke({'user_input': extractor_message}, {"configurable": {"thread_id": str(thread_id)}})
             final_answer = response.get("final_answer")
             ai_message = parse_final_answer(final_answer)
@@ -64,7 +64,7 @@ class BotController:
 
             message = BotRepository.save(db, Bot(
                 thread_id=thread_id,
-                user_message=user_msg,
+                user_message=extractor_message,
                 ai_message=ai_message,
                 create_at=create_at
             ))
@@ -89,10 +89,10 @@ class BotController:
             thread_id = str(uuid.uuid4())
 
         extractor_response = audio_extractor(audio_b64)
-        extractor_answer = response.get("final_answer")
+        extractor_answer = extractor_response.get("final_answer")
         extractor_message = parse_final_answer(extractor_answer)
 
-        if ai_message != "": 
+        if extractor_message != "": 
             response = graph.invoke({'user_input': extractor_message}, {"configurable": {"thread_id": str(thread_id)}})
             final_answer = response.get("final_answer")
             ai_message = parse_final_answer(final_answer)
@@ -101,7 +101,7 @@ class BotController:
 
             message = BotRepository.save(db, Bot(
                 thread_id=thread_id,
-                user_message=user_msg,
+                user_message=extractor_message,
                 ai_message=ai_message,
                 create_at=create_at
             ))

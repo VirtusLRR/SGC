@@ -1,4 +1,4 @@
 from ..schemas import OrchestratorOutputSchema
 from ..utils import agent_factory
 
-orchestrator_agent = agent_factory("orchestrator", OrchestratorOutputSchema)
+sql_transaction_agent = agent_factory("sql_transaction", OrchestratorOutputSchema)
