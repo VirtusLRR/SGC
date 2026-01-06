@@ -3,7 +3,21 @@ from ..agents import sql_item_reader
 from ..state import AgentState
 
 def sql_item_reader_node(state : AgentState):
-    response = sql_item_reader.invoke(state['user_input'])
+    history = state['messages']
+
+    context_messages = []
+    for msg in history:
+        if isinstance(msg, HumanMessage):
+            context_messages.append(f"Usuário: {msg.content}")
+        elif isinstance(msg, AIMessage):
+            context_messages.append(f"Assistente: {msg.content}")
+
+    full_context = "\n\n".join(context_messages)
+
+    # Criar mensagem com contexto
+    user_request = f"Solicitação atual: {state['user_input']}\n\nHistórico completo da conversa:\n\n{full_context}"
+
+    response = sql_item_reader.invoke({"input": user_request})
 
     if isinstance(response, dict):
         if 'output' in response:

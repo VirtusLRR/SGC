@@ -4,7 +4,7 @@ from ..state import AgentState
 
 def structurer_item_node(state : AgentState):
     # Pegar apenas a última mensagem do usuário
-    history = state['messages']
+    history = state['messages'][-2:]
     user_messages = [msg for msg in history if isinstance(msg, HumanMessage)]
 
     if not user_messages:
@@ -20,11 +20,8 @@ def structurer_item_node(state : AgentState):
 
     structured_response = response['structured_response']
 
-    # structured_response é um objeto Pydantic ItemStructuredOutputList
-    # Acessar o atributo 'items' diretamente, não usar .get()
     items = structured_response.items if hasattr(structured_response, 'items') else []
 
-    # Cada item é um ItemStructuredOutput com atributos item_data e transaction_data
     items_data = [item.item_data for item in items]
     transactions_data = [item.transaction_data for item in items]
 

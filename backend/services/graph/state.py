@@ -7,7 +7,7 @@ class AgentState(TypedDict):
     user_input: str
     next_agent: str
     explanation: str
-    sql_response: str
+    sql_response: Annotated[list[AnyMessage], operator.add]
     final_answer: str
     sql_item_instruction: Optional[Any]
     sql_recipe_instruction: Optional[Any]

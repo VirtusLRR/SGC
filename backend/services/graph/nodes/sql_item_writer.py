@@ -4,6 +4,17 @@ from ..state import AgentState
 import json
 
 def sql_item_writer_node(state : AgentState):
+    history = state['messages']
+
+    context_messages = []
+    for msg in history:
+        if isinstance(msg, HumanMessage):
+            context_messages.append(f"Usuário: {msg.content}")
+        elif isinstance(msg, AIMessage):
+            context_messages.append(f"Assistente: {msg.content}")
+
+    full_context = "\n\n".join(context_messages)
+
     # Converter os dados estruturados em mensagem
     instruction_data = state['sql_item_instruction']
 
@@ -15,7 +26,10 @@ def sql_item_writer_node(state : AgentState):
     else:
         instruction_json = json.dumps(instruction_data, ensure_ascii=False, indent=2)
 
-    response = sql_item_writer.invoke(f"Processe os seguintes dados de receitas:\n\n{instruction_json}")
+    # Adicionar histórico ao request
+    full_request = f"Histórico da conversa:\n\n{full_context}\n\nProcesse os seguintes dados de itens:\n\n{instruction_json}"
+
+    response = sql_item_writer.invoke({"input": full_request})
 
 
     if isinstance(response, dict):
