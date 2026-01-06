@@ -10,6 +10,6 @@ def orchestrator_node(state : AgentState):
     })
     return {
         'next_agent': response['structured_response'].next_agent,
-        'orchestrator_explanation': response['structured_response'].orchestrator_explanation,
+        'explanation': response['structured_response'].explanation,
         'messages': [HumanMessage(content=state['user_input'])]
     }

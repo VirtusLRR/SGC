@@ -1,15 +1,15 @@
 from langchain_core.messages import HumanMessage, AIMessage
-from ..agents import orchestrator_agent
+from ..agents import sql_orchestrator
 from ..state import AgentState
 
-def orchestrator_sql_node(state : AgentState):
-    response = orchestrator_agent.invoke({
+def sql_orchestrator_node(state : AgentState):
+    response = sql_orchestrator.invoke({
         "messages": [
             HumanMessage(content=state['user_input'])
         ]
     })
     return {
         'next_agent': response['structured_response'].next_agent,
-        'orchestrator_explanation': response['structured_response'].orchestrator_explanation,
+        'explanation': response['structured_response'].explanation,
         'messages': [HumanMessage(content=state['user_input'])]
     }

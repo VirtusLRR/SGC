@@ -2,7 +2,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 from ..agents import structurer_recipe_agent
 from ..state import AgentState
 
-def structurer_recipe_node(state : AgentState):
+def structurer_recipe_node(state: AgentState):
     history = state['messages']
 
     context_messages = []
@@ -20,9 +20,9 @@ def structurer_recipe_node(state : AgentState):
         ]
     })
 
-    sql_instruction = f"Por favor, insira estas receitas no banco de dados:\n{response['structured_response']}"
+    structured_response = response['structured_response']
 
     return {
-        'user_input': sql_instruction,
-        'messages': [AIMessage(content=sql_instruction)]
+        'sql_recipe_instruction': structured_response,
+        'messages': state['messages']
     }

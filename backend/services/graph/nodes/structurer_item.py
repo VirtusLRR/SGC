@@ -1,8 +1,8 @@
 from langchain_core.messages import HumanMessage, AIMessage
-from ..agents import structurer_recipe_agent
+from ..agents import structurer_item_agent
 from ..state import AgentState
 
-def structurer_recipe_node(state : AgentState):
+def structurer_item_node(state : AgentState):
     history = state['messages']
 
     context_messages = []
@@ -14,15 +14,18 @@ def structurer_recipe_node(state : AgentState):
 
     full_context = "\n\n".join(context_messages)
 
-    response = structurer_recipe_agent.invoke({
+    response = structurer_item_agent.invoke({
         "messages": [
             HumanMessage(content=f'Histórico completo da conversa:\n\n{full_context}\n\nAgora extraia e estruture as receitas mencionadas.')
         ]
     })
 
-    sql_instruction = f"Por favor, insira estas receitas no banco de dados:\n{response['structured_response']}"
+    structured_response = response['structured_response']
+    items = structured_response.get('items', [])
+    items_data = [item['item_data'] for item in items]
+    transactions_data = [item['transaction_data'] for item in items]
 
     return {
-        'user_input': sql_instruction,
-        'messages': [AIMessage(content=sql_instruction)]
+        'sql_item_instruction': items_data,
+        'sql_transaction_instruction': transactions_data
     }

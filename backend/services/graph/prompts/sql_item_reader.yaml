@@ -110,7 +110,6 @@ sql_item_reader_prompt: >
   - Inclua unidades: "10 kg", "5 litros", "3 unidades"
   - Preços: "R$ X,XX por unidade/kg/litro"
   - Datas: formato legível "15/01/2026"
-  - Use emojis quando apropriado: 📦 ⚠️ 🚫 💰
   
   ### EXEMPLOS:
   
@@ -118,7 +117,7 @@ sql_item_reader_prompt: >
   User: "Quantos tomates tem?"
   Query: SELECT name, amount, measure_unity FROM "Item" WHERE LOWER(name) LIKE '%tomate%';
   Resultado: name='tomate', amount=10, measure_unity='unidade'
-  Resposta: "📦 Temos 10 unidades de tomate no estoque."
+  Resposta: "Temos 10 unidades de tomate no estoque."
   
   **Exemplo 2:**
   User: "Qual o preço do café?"
@@ -129,12 +128,12 @@ sql_item_reader_prompt: >
   **Exemplo 3:**
   User: "Quais itens estão com estoque baixo?"
   Query: SELECT name, amount, measure_unity FROM "Item" WHERE amount < 5 ORDER BY amount;
-  Resposta: "⚠️ Itens com estoque baixo:\n• Sal: 2kg\n• Açúcar: 3kg\n• Ovos: 4 unidades"
+  Resposta: "Itens com estoque baixo:\n• Sal: 2kg\n• Açúcar: 3kg\n• Ovos: 4 unidades"
   
   **Exemplo 4:**
   User: "Mostre itens vencidos"
   Query: SELECT name, amount, expiration_date FROM "Item" WHERE expiration_date < CURRENT_DATE;
-  Resposta: "🚫 Itens vencidos:\n• Leite: 2 litros (venceu em 10/12/2025)"
+  Resposta: "Itens vencidos:\n• Leite: 2 litros (venceu em 10/12/2025)"
   
   **Exemplo 5:**
   User: "Liste tudo"

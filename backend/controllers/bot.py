@@ -2,7 +2,6 @@ from fastapi import Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
 from database.database import get_db
 from models import Bot
-from services.graph.graph import graph
 from services.graph.agents.extractor import optical_extractor, audio_extractor
 from repositories import BotRepository
 from schemas import BotRequest, BotResponse
@@ -15,6 +14,8 @@ class BotController:
     @staticmethod
     async def process_message(request: BotRequest, db: Session = Depends(get_db)):
         """Processa a mensagem do usuário, interage com o grafo e salva a resposta."""
+        from services.graph.graph import graph
+
         user_msg = request.user_message.strip()
         if request.thread_id is not None:
             thread_id = request.thread_id
@@ -42,6 +43,8 @@ class BotController:
             Args:
                 request: Corpo enviado pela requisição, precisa ter o atributo image_b64
         """
+        from services.graph.graph import graph
+
         if not request.image_b64 or is_valid_base64(request.image_b64):
             raise HTTPException(400, "Imagem inválida")
 
@@ -79,6 +82,8 @@ class BotController:
             Args:
                 request: Corpo enviado pela requisição, precisa ter o atributo audio_b64
         """
+        from services.graph.graph import graph
+
         if not request.audio_b64 or is_valid_base64(request.audio_b64):
             raise HTTPException(400, "Áudio inválido")
 

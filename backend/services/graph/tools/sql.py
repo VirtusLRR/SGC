@@ -5,10 +5,8 @@ from models.recipe import Recipe
 from models.recipe_item import RecipeItem
 from models.item import Item
 from models.transaction import Transaction
-from controllers import RecipeController, ItemController, TransactionController
 from schemas import RecipeRequest, ItemRequest, TransactionRequest
 from datetime import datetime
-from typing import Optional, List, Dict, Any
 
 
 # ============================================
@@ -148,6 +146,8 @@ def list_all_recipes_tool() -> str:
     Returns:
         String formatada com lista de receitas
     """
+    from controllers import RecipeController
+
     db = SessionLocal()
     try:
         recipes = RecipeController.find_all(db=db)
@@ -181,6 +181,8 @@ def find_recipe_by_name_tool(recipe_name: str) -> str:
     Returns:
         String com detalhes da(s) receita(s) encontrada(s)
     """
+    from controllers import RecipeController
+
     db = SessionLocal()
     try:
         recipes = RecipeController.find_by_name(recipe_name, db=db)
@@ -296,6 +298,8 @@ def delete_recipe_tool(recipe_name: str) -> str:
     Returns:
         String com confirmação de sucesso ou mensagem de erro
     """
+    from controllers import RecipeController
+
     db = SessionLocal()
     try:
         # Buscar receita por nome
@@ -339,6 +343,8 @@ def update_recipe_tool(
     Returns:
         String com confirmação de sucesso ou mensagem de erro
     """
+    from controllers import RecipeController
+
     db = SessionLocal()
     try:
         # Buscar receita
@@ -396,6 +402,8 @@ def list_all_items_tool() -> str:
     Returns:
         String formatada com lista de itens
     """
+    from controllers import ItemController
+
     db = SessionLocal()
     try:
         items = ItemController.find_all(db=db)
@@ -429,6 +437,8 @@ def find_item_by_name_tool(item_name: str) -> str:
     Returns:
         String com detalhes do(s) item(ns)
     """
+    from controllers import ItemController
+
     db = SessionLocal()
     try:
         items = ItemController.find_by_name(item_name, db=db)
@@ -482,6 +492,8 @@ def add_item_tool(
     Returns:
         Dict com success, message, item_id e dados para transação
     """
+    from controllers import ItemController
+
     db = SessionLocal()
     try:
         # Verificar se item já existe
@@ -558,6 +570,8 @@ def update_item_tool(
     Returns:
         Dict com success, message e dados para transação
     """
+    from controllers import ItemController
+
     db = SessionLocal()
     try:
         # Buscar item
@@ -673,6 +687,8 @@ def delete_item_tool(item_name: str, reason: str = "perda") -> dict:
     Returns:
         Dict com success, message e dados para transação
     """
+    from controllers import ItemController
+
     db = SessionLocal()
     try:
         # Buscar item
@@ -737,6 +753,8 @@ def get_low_stock_items_tool(threshold: int = 5) -> str:
     Returns:
         String formatada com itens em falta
     """
+    from controllers import ItemController
+
     db = SessionLocal()
     try:
         items = ItemController.get_low_stock_items(threshold, db=db)
@@ -764,6 +782,8 @@ def get_expired_items_tool() -> str:
     Returns:
         String formatada com itens vencidos
     """
+    from controllers import ItemController
+
     db = SessionLocal()
     try:
         items = ItemController.get_expired_items(db=db)
@@ -810,6 +830,8 @@ def add_transaction_tool(
     Returns:
         String com confirmação
     """
+    from controllers import TransactionController
+
     db = SessionLocal()
     try:
         # Validar tipo
@@ -850,6 +872,8 @@ def get_transaction_history_tool(item_name: str = None, limit: int = 10) -> str:
     Returns:
         String formatada com histórico
     """
+    from controllers import TransactionController
+
     db = SessionLocal()
     try:
         if item_name:

@@ -1,0 +1,55 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph LR;
+	__start__([<p>__start__</p>]):::first
+	orchestrator(orchestrator)
+	sql_orchestrator(sql_orchestrator)
+	sql_recipe(sql_recipe)
+	sql_recipe_reader(sql_recipe_reader)
+	structurer_recipe(structurer_recipe)
+	sql_recipe_writer(sql_recipe_writer)
+	sql_item(sql_item)
+	sql_item_reader(sql_item_reader)
+	structurer_item(structurer_item)
+	sql_item_writer(sql_item_writer)
+	sql_transaction(sql_transaction)
+	sql_transaction_reader(sql_transaction_reader)
+	sql_transaction_writer(sql_transaction_writer)
+	trivial(trivial)
+	revisor(revisor)
+	web(web)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> orchestrator;
+	orchestrator -. &nbsp;SQL_ORCHESTRATOR&nbsp; .-> sql_orchestrator;
+	orchestrator -. &nbsp;TRIVIAL&nbsp; .-> trivial;
+	orchestrator -. &nbsp;WEB&nbsp; .-> web;
+	revisor -. &nbsp;FINALIZAR&nbsp; .-> __end__;
+	revisor -. &nbsp;WEB&nbsp; .-> web;
+	sql_item -. &nbsp;ITEM_READER&nbsp; .-> sql_item_reader;
+	sql_item -. &nbsp;ITEM_WRITER&nbsp; .-> sql_item_writer;
+	sql_item -. &nbsp;STRUCTURER_ITEM&nbsp; .-> structurer_item;
+	sql_item_reader --> revisor;
+	sql_item_writer --> revisor;
+	sql_orchestrator -. &nbsp;SQL_ITEM&nbsp; .-> sql_item;
+	sql_orchestrator -. &nbsp;SQL_RECIPE&nbsp; .-> sql_recipe;
+	sql_orchestrator -. &nbsp;SQL_TRANSACTION&nbsp; .-> sql_transaction;
+	sql_recipe -. &nbsp;RECIPE_READER&nbsp; .-> sql_recipe_reader;
+	sql_recipe -. &nbsp;RECIPE_WRITER&nbsp; .-> sql_recipe_writer;
+	sql_recipe -. &nbsp;STRUCTURER_RECIPE&nbsp; .-> structurer_recipe;
+	sql_recipe_reader --> revisor;
+	sql_recipe_writer --> revisor;
+	sql_transaction -. &nbsp;TRANSACTION_READER&nbsp; .-> sql_transaction_reader;
+	sql_transaction -. &nbsp;TRANSACTION_WRITER&nbsp; .-> sql_transaction_writer;
+	sql_transaction_reader --> revisor;
+	sql_transaction_writer --> revisor;
+	structurer_item --> sql_item_writer;
+	structurer_item --> sql_transaction_writer;
+	structurer_recipe --> sql_recipe_writer;
+	trivial --> __end__;
+	web --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
