@@ -45,7 +45,7 @@ class BotController:
         """
         from services.graph.graph import graph
 
-        if not request.image_b64 or is_valid_base64(request.image_b64):
+        if not request.image_b64 or not is_valid_base64(request.image_b64):
             raise HTTPException(400, "Imagem inválida")
 
         image_b64 = request.image_b64
@@ -84,7 +84,7 @@ class BotController:
         """
         from services.graph.graph import graph
 
-        if not request.audio_b64 or is_valid_base64(request.audio_b64):
+        if not request.audio_b64 or not is_valid_base64(request.audio_b64):
             raise HTTPException(400, "Áudio inválido")
 
         audio_b64 = request.audio_b64

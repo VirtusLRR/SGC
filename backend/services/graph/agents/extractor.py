@@ -28,7 +28,7 @@ def optical_extractor(image_b64):
     response = llm.invoke([message])
 
     return {
-        'final_answer': response['messages'][-1].content,
+        'final_answer': response.content,
     }
 
 def audio_extractor(audio_b64):
@@ -54,5 +54,5 @@ def audio_extractor(audio_b64):
     response = llm.invoke([message])
 
     return {
-        'final_answer': response['messages'][-1].content,
+        'final_answer': response.content,
     }

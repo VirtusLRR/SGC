@@ -11,6 +11,8 @@ class BotBase(BaseModel):
 class BotRequest(BaseModel):
     thread_id: Optional[str] = None
     user_message: str
+    image_b64: Optional[str] = None
+    audio_b64: Optional[str] = None
 
 class BotResponse(BotBase):
     id: int
