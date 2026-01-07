@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from pydantic import BaseModel
 from database.database import Base
+from datetime import datetime
 
 class Bot(Base):
     __tablename__ = "Bot"
@@ -9,4 +10,4 @@ class Bot(Base):
     thread_id = Column(String, nullable=False, index=True)
     user_message = Column(String, nullable=False)
     ai_message = Column(String, nullable=False)
-    create_at = Column(String, nullable=False)
+    create_at = Column(String, default=str(datetime.now()), nullable=False)
