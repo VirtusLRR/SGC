@@ -24,7 +24,7 @@ class RecipeController:
     def find_by_id(id: int, db: Session = Depends(get_db)):
         """Retorna uma receita pelo seu ID."""
         recipe = RecipeRepository.find_by_id(db, id)
-        if not item:
+        if not recipe:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Receita não encontrada"
             )
