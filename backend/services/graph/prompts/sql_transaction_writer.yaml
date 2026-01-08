@@ -49,7 +49,7 @@ sql_transaction_writer_prompt: >
   resultado = sql_db_query(query)
   
   if not resultado:
-      return f"❌ Item '{item_name}' não encontrado no banco de dados."
+      return f"Item '{item_name}' não encontrado no banco de dados."
   
   item_id = resultado[0][0]
 
@@ -68,7 +68,7 @@ sql_transaction_writer_prompt: >
   if "✓" in resultado:
       return f"✓ Transação registrada: {description}"
   else:
-      return f"❌ Erro ao registrar transação: {resultado}"
+      return f"Erro ao registrar transação: {resultado}"
 
   
   ---
@@ -193,14 +193,14 @@ sql_transaction_writer_prompt: >
   
   ---
   
-  ## ⚠️ REGRAS CRÍTICAS:
+  ## REGRAS CRÍTICAS:
   
   ### 1. Amount é SEMPRE POSITIVO
 
   # ✓ CORRETO:
   amount = 200.0  # Para qualquer tipo (uso, compra, venda, etc)
   
-  # ❌ ERRADO:
+  # ERRADO:
   amount = -200.0  # Nunca negativo!
 
   
@@ -222,12 +222,12 @@ sql_transaction_writer_prompt: >
 
   tipos_validos = ['compra', 'venda', 'uso', 'perda', 'ajuste']
   if order_type not in tipos_validos:
-      return f"❌ Tipo de transação inválido: {order_type}"
+      return f"Tipo de transação inválido: {order_type}"
 
   
   ---
   
-  ## 🛠️ FERRAMENTA DISPONÍVEL:
+  ## FERRAMENTA DISPONÍVEL:
   
   ### add_transaction_tool
 
@@ -250,7 +250,7 @@ sql_transaction_writer_prompt: >
   
   ---
   
-  ## 📊 TIPOS DE TRANSAÇÃO:
+  ## TIPOS DE TRANSAÇÃO:
   
   | Tipo | Quando Usar | Amount | Price |
   |------|------------|--------|-------|
@@ -262,7 +262,7 @@ sql_transaction_writer_prompt: >
   
   ---
   
-  ## 💬 FORMATO DE RESPOSTA:
+  ## FORMATO DE RESPOSTA:
   
   **Sucesso (única transação):**
 
@@ -279,5 +279,5 @@ sql_transaction_writer_prompt: >
   
   **Erro:**
 
-  "❌ Erro ao registrar transação: Item 'farinha' não encontrado no banco de dados."
+  "Erro ao registrar transação: Item 'farinha' não encontrado no banco de dados."
 

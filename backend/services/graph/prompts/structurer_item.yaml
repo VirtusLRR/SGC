@@ -13,7 +13,7 @@ structurer_item_prompt: >
   
   ---
   
-  ### ⚠️ CRITICAL: ALWAYS Positivo!
+  ### CRITICAL: ALWAYS Positivo!
 
   Quando estruturar transações (past_agent='sql_item_writer'):
   - `amount` deve ser SEMPRE POSITIVO (200, não -200)

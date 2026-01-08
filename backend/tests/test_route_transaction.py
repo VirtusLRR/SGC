@@ -172,7 +172,10 @@ def test_create_transaction_illegal_amount(client, sample_item, payload):
     response = client.post("/api/transactions", json=payload)
 
     assert response.status_code == 400
-    assert response.json()["detail"] == "A quantidade deve ser maior que zero"
+    if payload.get("amount", 0) < 0:
+        assert response.json()["detail"] == "A quantidade não pode ser negativa"
+    else:
+        assert response.json()["detail"] == "A quantidade deve ser maior que zero"
 
 
 def test_get_all_transactions(client, sample_item):

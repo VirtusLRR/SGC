@@ -6,7 +6,6 @@ import json
 def sql_transaction_writer_node(state : AgentState):
     instruction_data = state['sql_transaction_instruction']
 
-    # Converter para JSON string para passar ao agente
     if hasattr(instruction_data, 'model_dump'):
         instruction_json = json.dumps(instruction_data.model_dump(), ensure_ascii=False, indent=2)
     elif isinstance(instruction_data, list):
@@ -14,7 +13,6 @@ def sql_transaction_writer_node(state : AgentState):
     else:
         instruction_json = json.dumps(instruction_data, ensure_ascii=False, indent=2)
 
-    # Adicionar histórico ao request
     full_request = f"Processe os seguintes dados de transações:\n\n{instruction_json}"
 
     response = sql_transaction_writer.invoke({"input": full_request})

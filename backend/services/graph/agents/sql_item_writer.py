@@ -48,18 +48,3 @@ sql_item_writer = create_sql_agent(
         get_expired_items_tool
     ]
 )
-
-# sql_item_writer = create_agent(
-#     model=llm,
-#     system_prompt=load_prompt("sql_item_writer"),
-#     tools=[
-#         list_all_items_tool,
-#         find_item_by_name_tool,
-#         add_item_tool,
-#         update_item_tool,
-#         delete_item_tool,
-#         get_low_stock_items_tool,
-#         get_expired_items_tool
-#     ]
-#
-# )

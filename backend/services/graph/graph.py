@@ -6,7 +6,6 @@ from .state import AgentState
 from .nodes import (
     orchestrator_node,
     trivial_node,
-    sql_node,
     revisor_node,
     web_node,
     sql_item_node,

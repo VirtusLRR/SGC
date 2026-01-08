@@ -1,6 +1,3 @@
-"""
-Configuração do pytest para testes BDD
-"""
 import pytest
 
 

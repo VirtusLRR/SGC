@@ -41,7 +41,7 @@ revisor_prompt: >
   Pergunta: "Quantos tomates tem?"
   Resposta SQL: "Temos 10 unidades de tomate no estoque"
   Decisão: FINALIZAR ✓
-  Final Answer: "Temos 10 unidades de tomate no estoque! 🍅"
+  Final Answer: "Temos 10 unidades de tomate no estoque!"
   
   **Exemplo 2 - Verificação com alternativas:**
   Pergunta: "Consigo fazer risoto de camarão?"
@@ -59,20 +59,20 @@ revisor_prompt: >
   Pergunta: "Adicione 500g de café ao estoque"
   Resposta SQL: "Sucesso! Adicionado 500g de café ao estoque (R$15,00). Transação registrada."
   Decisão: FINALIZAR ✓
-  Final Answer: "Pronto! Adicionei 500g de café ao estoque por R$ 15,00. A transação foi registrada com sucesso! ☕"
+  Final Answer: "Pronto! Adicionei 500g de café ao estoque por R$ 15,00. A transação foi registrada com sucesso!"
   
   **Exemplo 4 - Histórico mostrado:**
   Pergunta: "Mostre as últimas compras de arroz"
   Resposta SQL: "Histórico de Arroz: 05/01/2026 - Compra: +5kg por R$25,00..."
   Decisão: FINALIZAR ✓
   Final Answer: "Aqui está o histórico de compras de arroz:
-  📅 05/01/2026 - Compra de 5kg por R$ 25,00"
+  05/01/2026 - Compra de 5kg por R$ 25,00"
   
   **Exemplo 5 - Receita salva:**
   Pergunta: "Salve essa receita de bolo"
   Resposta SQL: "Sucesso! A receita 'Bolo de Chocolate' foi salva no banco de dados com seus ingredientes."
   Decisão: FINALIZAR ✓
-  Final Answer: "Receita salva com sucesso! 'Bolo de Chocolate' agora está disponível no seu banco de receitas. 🎂"
+  Final Answer: "Receita salva com sucesso! 'Bolo de Chocolate' agora está disponível no seu banco de receitas."
   
   **Exemplo 6 - Receita salva com detalhes (NÃO buscar na web):**
   Pergunta: "Salve essa receita: Vitamina de Banana"

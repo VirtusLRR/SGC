@@ -17,32 +17,28 @@ class StructurerOutputSchemaList(BaseModel): # receita
 
 
 class ItemDataForWriter(BaseModel):
-    """Dados do item para o ITEM_WRITER inserir no banco"""
     name: str
     amount: float
     measure_unity: str
     price: float = 0.0
     price_unit: str = "unidade"
     description: str = ""
-    expiration_date: Optional[str] = None  # Formato: 'YYYY-MM-DD'
+    expiration_date: Optional[str] = None
 
 
 class TransactionDataForWriter(BaseModel):
-    """Dados da transação para o TRANSACTION_WRITER registrar no histórico"""
-    order_type: str  # 'compra', 'venda', 'uso', 'perda', 'ajuste'
+    order_type: str
     description: str
-    amount: float  # Quantidade (positivo para entrada, negativo para saída)
-    price: Optional[float] = None  # Preço da transação (opcional)
-
+    amount: float
+    price: Optional[float] = None
 
 class ItemStructuredOutput(BaseModel):
-    """Saída estruturada completa para um item (com dados para 2 agentes)"""
     item_data: ItemDataForWriter
     transaction_data: TransactionDataForWriter
 
 
-class ItemStructuredOutputList(BaseModel): # item
-    """Lista de itens estruturados"""
+class ItemStructuredOutputList(BaseModel):
+
     items: List[ItemStructuredOutput]    
     ingredients: List[IngredientItem]
 

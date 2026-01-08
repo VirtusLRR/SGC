@@ -3,6 +3,7 @@ from langchain.agents.structured_output import ToolStrategy
 from langchain_community.agent_toolkits import create_sql_agent
 from langchain.agents import create_agent
 from ..utils import load_prompt
+from ..utils import get_sql_db
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from ..tools.sql import (
@@ -23,7 +24,7 @@ DB_HOST = os.getenv("POSTGRES_HOST")
 DB_PORT = os.getenv("POSTGRES_PORT")
 
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-db = SQLDatabase.from_uri(DATABASE_URL)
+db = get_sql_db(DATABASE_URL, ["Transaction"])
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro", temperature=0)
 

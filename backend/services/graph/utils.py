@@ -17,16 +17,6 @@ def load_prompt(prompt_name: str) -> dict:
     with open(prompt_path, 'r', encoding='utf-8') as file:
         return yaml.safe_load(file).get(f'{prompt_name}_prompt', '')
 
-def agent_factory(prompt: str, schema: BaseModel, model: str = "gemini-3-pro"):
-    load_dotenv()
-    llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro", temperature=0.5)
-
-    orchestrator_agent = create_agent(
-        model=llm,
-        system_prompt=load_prompt(prompt),
-        response_format=ToolStrategy(schema)
-    )
-
 def get_sql_db(url, tables, retries=5, delay=2):
     for i in range(retries):
         try:

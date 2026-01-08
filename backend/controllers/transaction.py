@@ -169,7 +169,9 @@ def default_validators(request: TransactionRequest, db: Session):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Campo obrigatório vazio")
     if request.description == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Campo obrigatório vazio")
-    if request.amount <= 0:
+    if request.amount < 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="A quantidade não pode ser negativa")
+    if request.amount == 0 and request.order_type != "ajuste":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="A quantidade deve ser maior que zero")
     if not ItemRepository.exists_by_id(db, request.item_id):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Item não encontrado")
