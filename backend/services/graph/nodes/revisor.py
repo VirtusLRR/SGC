@@ -13,7 +13,6 @@ def revisor_node(state : AgentState):
             context_messages.append(f"Assistente: {msg.content}")
 
     full_context = "\n\n".join(context_messages)
-    print("RESPONSE SQL NO NO REVISOR: ", state['sql_response'])
 
     response = revisor_agent.invoke({
         "messages": [

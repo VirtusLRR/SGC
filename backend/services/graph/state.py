@@ -17,6 +17,7 @@ def sql_response_reducer(left: list[AnyMessage], right: Union[list[AnyMessage], 
 class AgentState(TypedDict):
     user_input: str
     next_agent: str
+    past_agent: str
     explanation: str
     sql_response: Annotated[list[AnyMessage], sql_response_reducer]
     query_sql: Optional[Any]

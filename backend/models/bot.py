@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String
 from pydantic import BaseModel
 from database.database import Base
 from datetime import datetime

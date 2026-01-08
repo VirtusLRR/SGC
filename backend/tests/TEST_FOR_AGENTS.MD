@@ -692,7 +692,7 @@ Sucesso! banana nanica atualizado (preço/validade).
 ---
 
 ### Teste 8.6 - Tentar Usar Mais do Que Tem (Validação)
-**Entrada:** `Usei 5000g de farinha`
+**Entrada:** `Usei 200g de farinha`
 
 **Fluxo Esperado:**
 - Orchestrator → SQL_ORCHESTRATOR → SQL_ITEM → ITEM_WRITER

@@ -1,7 +1,6 @@
 from langchain_core.messages import HumanMessage, AIMessage
 from ..agents import sql_recipe_writer
 from ..state import AgentState
-import json
 
 def sql_recipe_writer_node(state : AgentState):
     response = sql_recipe_writer.invoke(state['sql_recipe_instruction'])

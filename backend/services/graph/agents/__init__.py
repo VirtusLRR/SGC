@@ -1,6 +1,5 @@
 from .orchestrator import orchestrator_agent
 from .revisor import revisor_agent
-from .sql import sql_agent
 from .sql_orchestrator import sql_orchestrator
 from .sql_recipe import sql_recipe_agent
 from .sql_item import sql_item_agent

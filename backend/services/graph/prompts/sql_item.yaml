@@ -17,13 +17,13 @@ sql_item_prompt: >
      ✓ Inserção (INSERT) de novos itens
      ✓ SEMPRE quando for adicionar/criar item no estoque
      ✓ Estrutura os dados antes de salvar
-     ⚠️ Gera TRANSACTION automaticamente (compra)
+     Gera TRANSACTION automaticamente (compra)
   
   3. **ITEM_WRITER** - Use para:
      ✓ Deleção (DELETE) de itens
      ✓ Atualização (UPDATE) de quantidades, preços, validades
      ✓ Uso de ingredientes, vendas, ajustes
-     ⚠️ Todas operações geram TRANSACTION automaticamente
+     Todas operações geram TRANSACTION automaticamente
   
   ### REGRAS DE DECISÃO:
   

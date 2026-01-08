@@ -23,5 +23,6 @@ def sql_item_node(state : AgentState):
     return {
         'next_agent': response['structured_response'].next_agent,
         'explanation': response['structured_response'].explanation,
+        'past_agent': "sql_item",
         'messages': [HumanMessage(content=state['user_input'])]
     }

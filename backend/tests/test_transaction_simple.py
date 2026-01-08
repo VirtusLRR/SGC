@@ -1,8 +1,3 @@
-"""
-Testes simples para verificar a funcionalidade básica da entidade Transaction
-sem depender do ambiente completo de testes
-"""
-
 def test_transaction_schema_validation():
     """Testa se os schemas Transaction funcionam corretamente"""
     from schemas.transaction import TransactionRequest, TransactionResponse
@@ -55,7 +50,7 @@ def test_transaction_model_structure():
     for col in expected_columns:
         assert col in column_names, f"Coluna {col} não encontrada no modelo Transaction"
     
-    print("✅ Modelo Transaction estruturado corretamente!")
+    print("Modelo Transaction estruturado corretamente!")
 
 def test_transaction_repository_methods():
     """Testa se o repository Transaction tem todos os métodos necessários"""
@@ -74,7 +69,7 @@ def test_transaction_repository_methods():
         assert hasattr(TransactionRepository, method), f"Método {method} não encontrado no repository"
         assert callable(getattr(TransactionRepository, method)), f"Método {method} não é chamável"
     
-    print("✅ Repository Transaction com todos os métodos necessários!")
+    print("Repository Transaction com todos os métodos necessários!")
 
 def test_transaction_controller_methods():
     """Testa se o controller Transaction tem todos os métodos necessários"""
@@ -93,7 +88,7 @@ def test_transaction_controller_methods():
         assert hasattr(TransactionController, method), f"Método {method} não encontrado no controller"
         assert callable(getattr(TransactionController, method)), f"Método {method} não é chamável"
     
-    print("✅ Controller Transaction com todos os métodos necessários!")
+    print("Controller Transaction com todos os métodos necessários!")
 
 if __name__ == "__main__":
     print("🧪 Executando testes simples da entidade Transaction...\n")

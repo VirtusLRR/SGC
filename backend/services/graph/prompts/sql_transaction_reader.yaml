@@ -136,21 +136,20 @@ sql_transaction_reader_prompt: >
   - Use datas legíveis: "15/01/2026"
   - Valores monetários: "R$ X,XX"
   - Agrupe por categoria quando relevante
-  - Use emojis: 📊 💰 📈 📉 🛒 💸
   
   ### EXEMPLOS:
   
   **Exemplo 1:**
   User: "Mostre o histórico do arroz"
   Query: (histórico do arroz limitado a 10)
-  Resposta: "📊 Histórico de Arroz:\n\n05/01 - COMPRA: 5kg por R$25\n03/01 - USO: 200g\n..."
+  Resposta: "Histórico de Arroz:\n\n05/01 - COMPRA: 5kg por R$25\n03/01 - USO: 200g\n..."
   
   **Exemplo 2:**
   User: "Quanto gastei este mês?"
   Query: SUM de compras do mês
-  Resposta: "💰 Total gasto em compras este mês: R$ 234,50"
+  Resposta: "Total gasto em compras este mês: R$ 234,50"
   
   **Exemplo 3:**
   User: "Quais itens mais uso?"
   Query: Itens ordenados por uso
-  Resposta: "📊 Itens mais usados:\n1. Farinha - 1.5kg (15 vezes)\n2. Açúcar - 800g (12 vezes)..."
+  Resposta: "Itens mais usados:\n1. Farinha - 1.5kg (15 vezes)\n2. Açúcar - 800g (12 vezes)..."
