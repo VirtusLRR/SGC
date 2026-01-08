@@ -1,0 +1,109 @@
+.metric-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-left: 4px solid #e0e0e0;
+}
+
+.metric-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.metric-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.metric-card__icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 24px;
+  background: #f5f5f5;
+}
+
+.metric-card__trend {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.metric-card__trend--up {
+  color: #16a34a;
+  background: #dcfce7;
+}
+
+.metric-card__trend--down {
+  color: #dc2626;
+  background: #fee2e2;
+}
+
+.metric-card__content {
+  margin-top: 8px;
+}
+
+.metric-card__title {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+}
+
+.metric-card__value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 4px 0;
+}
+
+.metric-card__subtitle {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 4px 0 0 0;
+}
+
+/* Variantes de tipo */
+.metric-card--success {
+  border-left-color: #16a34a;
+}
+
+.metric-card--success .metric-card__icon {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.metric-card--warning {
+  border-left-color: #f59e0b;
+}
+
+.metric-card--warning .metric-card__icon {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.metric-card--danger {
+  border-left-color: #dc2626;
+}
+
+.metric-card--danger .metric-card__icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.metric-card--info {
+  border-left-color: #3b82f6;
+}
+
+.metric-card--info .metric-card__icon {
+  background: #dbeafe;
+  color: #3b82f6;
+}
