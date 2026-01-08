@@ -1,0 +1,114 @@
+.btn {
+  padding: var(--spacing-md) var(--spacing-xl);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  font-family: inherit;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn__icon {
+  display: flex;
+  align-items: center;
+}
+
+.btn__text {
+  display: flex;
+  align-items: center;
+}
+
+/* Variants */
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-bg-primary);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+}
+
+.btn--secondary {
+  background: var(--color-bg-primary);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-medium);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: var(--color-bg-secondary);
+}
+
+.btn--danger {
+  background: var(--color-danger);
+  color: var(--color-bg-primary);
+}
+
+.btn--danger:hover:not(:disabled) {
+  background: var(--color-danger-dark);
+}
+
+.btn--success {
+  background: var(--color-success);
+  color: var(--color-bg-primary);
+}
+
+.btn--success:hover:not(:disabled) {
+  background: #15803d;
+}
+
+.btn--warning {
+  background: var(--color-warning);
+  color: var(--color-bg-primary);
+}
+
+.btn--warning:hover:not(:disabled) {
+  background: #d97706;
+}
+
+/* Sizes */
+.btn--small {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  gap: var(--spacing-xs);
+}
+
+.btn--medium {
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: var(--font-size-base);
+}
+
+.btn--large {
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  font-size: var(--font-size-md);
+}
+
+/* Full Width */
+.btn--full-width {
+  width: 100%;
+}
+
+/* Loading State */
+.btn--loading {
+  position: relative;
+}
+
+.btn--loading .btn__text::after {
+  content: '...';
+  animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60%, 100% { content: '...'; }
+}
