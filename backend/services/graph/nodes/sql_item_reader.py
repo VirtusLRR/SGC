@@ -1,9 +1,9 @@
 from langchain_core.messages import HumanMessage, AIMessage
-from ..agents import sql_agent
+from ..agents import sql_item_reader
 from ..state import AgentState
 
-def sql_node(state : AgentState):
-    response = sql_agent.invoke(state['user_input'])
+def sql_item_reader_node(state : AgentState):
+    response = sql_item_reader.invoke(state['query_sql'])
 
     if isinstance(response, dict):
         if 'output' in response:

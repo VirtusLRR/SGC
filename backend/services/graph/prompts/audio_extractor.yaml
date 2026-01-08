@@ -1,0 +1,14 @@
+audio_extractor_prompt: >
+  Transcreva o áudio e retorne uma string contendo EXATAMENTE a informação transcrita
+
+  ### REGRAS IMPORTANTES
+  1. Não adicione informações ou explicações fora o conteúdo transcrito.
+  2. Retorne apenas a string com o conteúdo transcrito.
+  3. Caso o áudio seja inválido, retorne EXATAMENE uma string vazia.
+
+  ### Áudios Inválidos
+  1. Áudios sem fala humana.
+  2. Áudios compostos apenas por ruído.
+
+  ### Áudios válidos
+  1. Fala humana com ruídos

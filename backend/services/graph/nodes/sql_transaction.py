@@ -1,8 +1,8 @@
 from langchain_core.messages import HumanMessage, AIMessage
-from ..agents import structurer_agent
+from ..agents import sql_transaction_agent
 from ..state import AgentState
 
-def structurer_node(state : AgentState):
+def sql_transaction_node(state : AgentState):
     history = state['messages']
 
     context_messages = []
@@ -14,15 +14,14 @@ def structurer_node(state : AgentState):
 
     full_context = "\n\n".join(context_messages)
 
-    response = structurer_agent.invoke({
+    response = sql_transaction_agent.invoke({
         "messages": [
-            HumanMessage(content=f'Histórico completo da conversa:\n\n{full_context}\n\nAgora extraia e estruture as receitas mencionadas.')
+            HumanMessage(content=state['user_input']),
+            HumanMessage(content=f'Histórico completo da conversa:\n\n{full_context}')
         ]
     })
-
-    sql_instruction = f"Por favor, insira estas receitas no banco de dados:\n{response['structured_response']}"
-
     return {
-        'user_input': sql_instruction,
-        'messages': [AIMessage(content=sql_instruction)]
+        'next_agent': response['structured_response'].next_agent,
+        'explanation': response['structured_response'].explanation,
+        'messages': [HumanMessage(content=state['user_input'])]
     }

@@ -15,6 +15,3 @@ orchestrator_agent = create_agent(
     system_prompt=load_prompt("orchestrator"),
     response_format=ToolStrategy(OrchestratorOutputSchema)
 )
-
-
-

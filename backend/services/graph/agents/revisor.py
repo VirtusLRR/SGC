@@ -15,8 +15,3 @@ revisor_agent = create_agent(
     system_prompt=load_prompt("revisor"),
     response_format=ToolStrategy(RevisorOutputSchema)
 )
-
-
-
-
-

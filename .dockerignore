@@ -1,0 +1,29 @@
+# Ambientes Virtuais (Ocupam muito espaço e não devem ir para a imagem)
+venv/
+.venv/
+env/
+
+# Cache do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Git (Pode ser pesado se o histórico for longo)
+.git/
+.gitignore
+
+# Banco de Dados Local (Evita copiar arquivos de dados gigantes)
+*.sqlite3
+postgres_data/
+
+# Docker e Logs
+.dockerignore
+Dockerfile
+docker-compose.yml
+*.log
+
+# Variáveis de Ambiente e IDEs
+.env
+.vscode/
+.idea/
