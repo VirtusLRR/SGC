@@ -1,0 +1,143 @@
+/* ============================
+   Chat Input Component
+   ============================ */
+
+.chat-input {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    background-color: var(--color-bg-primary);
+    border-top: 1px solid var(--color-border-light);
+}
+
+/* ============================
+   Input Container
+   ============================ */
+
+.chat-input__container {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+/* ============================
+   Textarea
+   ============================ */
+
+.chat-input__textarea {
+    flex: 1;
+    min-height: 40px;
+    max-height: 120px;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border-medium);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: none;
+    overflow-y: auto;
+    transition: border-color 0.2s ease;
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+}
+
+.chat-input__textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background-color: var(--color-bg-primary);
+}
+
+.chat-input__textarea:disabled {
+    background-color: var(--color-bg-input);
+    color: var(--color-text-quaternary);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.chat-input__textarea::placeholder {
+    color: var(--color-text-quaternary);
+}
+
+/* ============================
+   Send Button
+   ============================ */
+
+.chat-input__button {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+/* ============================
+   Hint Text
+   ============================ */
+
+.chat-input__hint {
+    font-size: 11px;
+    color: var(--color-text-quaternary);
+    text-align: center;
+    padding: 0 4px;
+}
+
+/* ============================
+   Responsividade
+   ============================ */
+
+@media (max-width: 768px) {
+    .chat-input {
+        padding: 12px;
+    }
+
+    .chat-input__textarea {
+        font-size: 16px; /* Previne zoom no iOS */
+        padding: 8px 10px;
+    }
+
+    .chat-input__hint {
+        display: none; /* Esconde hint em mobile */
+    }
+}
+
+/* ============================
+   Estados e Variações
+   ============================ */
+
+/* Loading state */
+.chat-input--loading .chat-input__textarea {
+    opacity: 0.6;
+}
+
+/* Error state */
+.chat-input--error .chat-input__textarea {
+    border-color: var(--color-danger);
+}
+
+/* ============================
+   Scrollbar Customizado
+   ============================ */
+
+.chat-input__textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-input__textarea::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+    border-radius: 4px;
+}
+
+.chat-input__textarea::-webkit-scrollbar-thumb {
+    background: var(--color-border-medium);
+    border-radius: 4px;
+}
+
+.chat-input__textarea::-webkit-scrollbar-thumb:hover {
+    background: var(--color-border-dark);
+}
+
