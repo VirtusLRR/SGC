@@ -1,6 +1,5 @@
 from .orchestrator import orchestrator_node
 from .revisor import revisor_node
-from .sql import sql_node
 from .trivial import trivial_node
 from .web import web_node
 from .sql_item_writer import sql_item_writer_node
