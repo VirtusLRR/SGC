@@ -85,7 +85,7 @@ export const ChatbotWidget = () => {
             <div className="chatbot-widget__header-info">
               <div className="chatbot-widget__avatar">🤖</div>
               <div className="chatbot-widget__header-text">
-                <h3 className="chatbot-widget__title">Assistente Virtual</h3>
+                <h3 className="chatbot-widget__title">Assistente de Estoque</h3>
                 <span className="chatbot-widget__status">Online</span>
               </div>
             </div>
