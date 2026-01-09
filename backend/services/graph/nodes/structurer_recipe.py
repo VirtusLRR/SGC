@@ -5,7 +5,7 @@ from ..state import AgentState
 def structurer_recipe_node(state: AgentState):
     response = structurer_recipe_agent.invoke({
         "messages": [
-            HumanMessage(content=f'Solicitação atual do usuário:\n\n{state['query_sql']}\n\nHistórico completo da conversa:\n\n{full_context}\n\nExtraia e estruture APENAS as receitas mencionadas NESTA solicitação específica. Ignore qualquer receita mencionada anteriormente.')
+            HumanMessage(content=f'Solicitação atual do usuário:\n\n{state['query_sql']}\n\nHistórico completo da conversa:\n\n{state['query_sql']}\n\nExtraia e estruture APENAS as receitas mencionadas NESTA solicitação específica. Ignore qualquer receita mencionada anteriormente.')
         ]
     })
 
