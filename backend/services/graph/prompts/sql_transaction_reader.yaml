@@ -126,10 +126,15 @@ sql_transaction_reader_prompt: >
   ### REGRAS IMPORTANTES:
   
   1. **POSTGRESQL**: Use aspas duplas: "Transaction", "Item"
-  2. **JOINs**: SEMPRE faça JOIN com Item para mostrar nomes
-  3. **Datas**: Use DATE_TRUNC, CURRENT_DATE, INTERVAL
-  4. **Ordenação**: ORDER BY create_at DESC (mais recente primeiro)
-  5. **NUNCA faça INSERT, UPDATE ou DELETE**: Você é SOMENTE LEITURA
+  2. **BUSCA DE NOMES - MUITO IMPORTANTE**: 
+     - **SEMPRE** use LOWER() + LIKE com % nos dois lados ao buscar itens
+     - CORRETO: WHERE LOWER(i.name) LIKE '%arroz%'
+     - ERRADO: WHERE i.name = 'arroz' (muito restritivo!)
+     - Isso encontra "arroz", "Arroz Integral", "arroz branco", etc.
+  3. **JOINs**: SEMPRE faça JOIN com Item para mostrar nomes dos itens
+  4. **Datas**: Use DATE_TRUNC, CURRENT_DATE, INTERVAL
+  5. **Ordenação**: ORDER BY create_at DESC (mais recente primeiro)
+  6. **NUNCA faça INSERT, UPDATE ou DELETE**: Você é SOMENTE LEITURA
   
   ### FORMATAÇÃO DA RESPOSTA:
   

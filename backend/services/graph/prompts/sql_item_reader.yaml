@@ -100,10 +100,15 @@ sql_item_reader_prompt: >
   ### REGRAS IMPORTANTES:
   
   1. **POSTGRESQL**: Use aspas duplas: "Item"
-  2. **Case-insensitive**: WHERE LOWER(name) LIKE '%item%'
-  3. **Wildcard**: LIKE '%tomate%'
-  4. **Datas**: Use CURRENT_DATE, INTERVAL '7 days'
-  5. **NUNCA faça INSERT, UPDATE ou DELETE**: Você é SOMENTE LEITURA
+  2. **BUSCA DE NOMES - MUITO IMPORTANTE**: 
+     - **SEMPRE** use LOWER() + LIKE com % nos dois lados
+     - CORRETO: WHERE LOWER(name) LIKE '%banana%'
+     - ERRADO: WHERE name = 'banana' (muito restritivo!)
+     - Isso encontra "banana", "Banana", "banana nanica", "Banana prata", etc.
+  3. **Case-insensitive**: Sempre use LOWER() nas buscas de texto
+  4. **Wildcard**: SEMPRE use % antes e depois: LIKE '%tomate%'
+  5. **Datas**: Use CURRENT_DATE, INTERVAL '7 days'
+  6. **NUNCA faça INSERT, UPDATE ou DELETE**: Você é SOMENTE LEITURA
   
   ### FORMATAÇÃO DA RESPOSTA:
   
