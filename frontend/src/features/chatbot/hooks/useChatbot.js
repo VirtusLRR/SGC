@@ -3,8 +3,9 @@ import { chatbotApi } from '../api/chatbotApi';
 
 /**
  * Custom Hook para gerenciar operações do chatbot
+ * @param {Function} onResponseReceived - Callback executado após receber resposta da API
  */
-export const useChatbot = () => {
+export const useChatbot = (onResponseReceived) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -92,6 +93,10 @@ export const useChatbot = () => {
       throw err;
     } finally {
       setLoading(false);
+      // Executa callback após resposta da API
+      if (onResponseReceived && typeof onResponseReceived === 'function') {
+        onResponseReceived();
+      }
     }
   };
 
@@ -168,6 +173,10 @@ export const useChatbot = () => {
       throw err;
     } finally {
       setLoading(false);
+      // Executa callback após resposta da API
+      if (onResponseReceived && typeof onResponseReceived === 'function') {
+        onResponseReceived();
+      }
     }
   };
 
@@ -245,6 +254,10 @@ export const useChatbot = () => {
       throw err;
     } finally {
       setLoading(false);
+      // Executa callback após resposta da API
+      if (onResponseReceived && typeof onResponseReceived === 'function') {
+        onResponseReceived();
+      }
     }
   };
 

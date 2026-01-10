@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { useChatbot } from '../../hooks/useChatbot';
 import { ChatbotMessage } from '../chatbot-message/ChatbotMessage';
 import { ChatbotInput } from '../chatbot-input/ChatbotInput';
@@ -7,8 +8,9 @@ import './ChatbotWidget.css';
 
 /**
  * Widget principal do chatbot - Componente flutuante de canto de página
+ * @param {Function} onResponseReceived - Callback executado após receber resposta da API do chatbot
  */
-export const ChatbotWidget = () => {
+export const ChatbotWidget = ({ onResponseReceived }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const messagesEndRef = useRef(null);
@@ -23,7 +25,7 @@ export const ChatbotWidget = () => {
     sendAudioMessage,
     clearChat,
     fetchHistory,
-  } = useChatbot();
+  } = useChatbot(onResponseReceived);
 
   // Auto-scroll para a última mensagem
   const scrollToBottom = () => {
@@ -213,5 +215,13 @@ export const ChatbotWidget = () => {
       />
     </div>
   );
+};
+
+ChatbotWidget.propTypes = {
+  onResponseReceived: PropTypes.func,
+};
+
+ChatbotWidget.defaultProps = {
+  onResponseReceived: null,
 };
 
