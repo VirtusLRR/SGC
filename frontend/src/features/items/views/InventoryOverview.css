@@ -44,6 +44,7 @@
   outline: none;
   transition: all var(--transition-fast);
   background: var(--color-bg-input);
+  color: var(--color-text-tertiary)
 }
 
 .search-input:focus {
