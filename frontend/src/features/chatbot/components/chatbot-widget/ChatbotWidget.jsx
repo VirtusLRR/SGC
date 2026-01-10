@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useChatbot } from '../../hooks/useChatbot';
 import { ChatbotMessage } from '../chatbot-message/ChatbotMessage';
 import { ChatbotInput } from '../chatbot-input/ChatbotInput';
+import { ChatbotHistoryModal } from '../chatbot-history-modal/ChatbotHistoryModal';
 import './ChatbotWidget.css';
 
 /**
@@ -9,6 +10,7 @@ import './ChatbotWidget.css';
  */
 export const ChatbotWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
 
@@ -17,7 +19,10 @@ export const ChatbotWidget = () => {
     loading,
     error,
     sendMessage,
+    sendImageMessage,
+    sendAudioMessage,
     clearChat,
+    fetchHistory,
   } = useChatbot();
 
   // Auto-scroll para a última mensagem
@@ -46,11 +51,44 @@ export const ChatbotWidget = () => {
     }
   };
 
+  // Handler para enviar imagem
+  const handleSendImage = async (message, imageBase64) => {
+    try {
+      await sendImageMessage(message, imageBase64);
+    } catch (err) {
+      console.error('Erro ao enviar imagem:', err);
+    }
+  };
+
+  // Handler para enviar áudio
+  const handleSendAudio = async (message, audioBase64) => {
+    try {
+      await sendAudioMessage(message, audioBase64);
+    } catch (err) {
+      console.error('Erro ao enviar áudio:', err);
+    }
+  };
+
   // Handler para limpar chat
   const handleClearChat = () => {
     if (window.confirm('Deseja limpar toda a conversa e iniciar uma nova?')) {
       clearChat();
     }
+  };
+
+  // Handler para abrir histórico
+  const handleOpenHistory = () => {
+    setIsHistoryOpen(true);
+  };
+
+  // Handler para fechar histórico
+  const handleCloseHistory = () => {
+    setIsHistoryOpen(false);
+  };
+
+  // Handler para carregar histórico
+  const handleLoadHistory = async () => {
+    return await fetchHistory();
   };
 
   // Previne scroll do body quando chat está aberto (mobile)
@@ -91,6 +129,14 @@ export const ChatbotWidget = () => {
             </div>
 
             <div className="chatbot-widget__header-actions">
+              <button
+                className="chatbot-widget__action-button"
+                onClick={handleOpenHistory}
+                aria-label="Ver histórico"
+                title="Ver histórico"
+              >
+                📜
+              </button>
               <button
                 className="chatbot-widget__action-button"
                 onClick={handleClearChat}
@@ -151,11 +197,20 @@ export const ChatbotWidget = () => {
           {/* Input Area */}
           <ChatbotInput
             onSend={handleSendMessage}
+            onSendImage={handleSendImage}
+            onSendAudio={handleSendAudio}
             disabled={loading}
             placeholder="Digite sua mensagem..."
           />
         </div>
       )}
+
+      {/* History Modal */}
+      <ChatbotHistoryModal
+        isOpen={isHistoryOpen}
+        onClose={handleCloseHistory}
+        onLoadHistory={handleLoadHistory}
+      />
     </div>
   );
 };
