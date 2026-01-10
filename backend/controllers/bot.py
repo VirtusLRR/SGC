@@ -87,7 +87,7 @@ class BotController:
         if not request.audio_b64 or not is_valid_base64(request.audio_b64):
             raise HTTPException(400, "Áudio inválido")
 
-        audio_b64 = request.audio_b64
+        audio_b64 = extract_base64_from_data_url(request.audio_b64)
         if request.thread_id is not None:
             thread_id = request.thread_id
         else:
@@ -132,7 +132,8 @@ def is_valid_base64(data: str) -> bool:
             data: informação no formato base64
     """
     try:
-        base64.b64decode(data, validate=True)
+        clean_data = extract_base64_from_data_url(data)
+        base64.b64decode(clean_data, validate=True)
         return True
     except (binascii.Error, ValueError):
         return False
@@ -147,3 +148,16 @@ def parse_final_answer(final_answer: str) -> str:
         return final_answer
     else:
         return str(final_answer)
+
+def extract_base64_from_data_url(data_url: str) -> str:
+    """
+        Extrai a parte base64 pura de um data URL
+        Args:
+            data_url: String no formato 'data:image/png;base64,iVBORw0KGgo...'
+        Returns:
+            String base64 pura (sem prefixo)
+    """
+    if ',' in data_url and data_url.startswith('data:'):
+        # Remove o prefixo 'data:image/png;base64,' ou similar
+        return data_url.split(',', 1)[1]
+    return data_url
