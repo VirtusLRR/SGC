@@ -86,8 +86,6 @@ select.form-input {
 }
 
 .summary-label {
-  font-size: 14px;
-.summary-label {
   font-size: var(--font-size-base);
   color: var(--color-text-tertiary);
   font-weight: var(--font-weight-medium);
