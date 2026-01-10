@@ -87,6 +87,15 @@ export const itemsApi = {
     const response = await api.get(`/items/top-value/${topN}`);
     return response.data;
   },
+
+  /**
+   * GET /items/total-value/:id
+   * Retorna o valor total de estoque de um item específico (preço × quantidade)
+   */
+  getTotalItemValue: async (id) => {
+    const response = await api.get(`/items/total-value/${id}`);
+    return response.data;
+  },
 };
 
 /**

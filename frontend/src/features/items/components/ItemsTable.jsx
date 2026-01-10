@@ -1,6 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ItemStatus, StatusColors } from '../types/item.types';
+import { itemsApi } from '../api/itemsApi';
 import './ItemsTable.css';
 
 /**
@@ -54,10 +55,41 @@ export const ItemsTable = ({
   };
 
   /**
-   * Calcula o valor total do item
+   * Estado para armazenar valores totais buscados da API
+   */
+  const [totalValues, setTotalValues] = useState({});
+
+  /**
+   * Busca valores totais dos itens usando a API
+   */
+  useEffect(() => {
+    const fetchTotalValues = async () => {
+      const values = {};
+      
+      for (const item of items) {
+        try {
+          const result = await itemsApi.getTotalItemValue(item.id);
+          values[item.id] = result.total_value;
+        } catch (error) {
+          console.error(`Erro ao buscar valor total do item ${item.id}:`, error);
+          // Fallback para cálculo local em caso de erro
+          values[item.id] = item.amount * (item.price || 0);
+        }
+      }
+      
+      setTotalValues(values);
+    };
+
+    if (items && items.length > 0) {
+      fetchTotalValues();
+    }
+  }, [items]);
+
+  /**
+   * Obtém o valor total do item da API ou calcula localmente
    */
   const getTotalValue = (item) => {
-    return item.amount * (item.price || 0);
+    return totalValues[item.id] ?? (item.amount * (item.price || 0));
   };
 
   const processedItems = useMemo(() => {
@@ -66,7 +98,7 @@ export const ItemsTable = ({
       status: getItemStatus(item),
       totalValue: getTotalValue(item),
     }));
-  }, [items]);
+  }, [items, totalValues]);
 
   if (loading) {
     return (
