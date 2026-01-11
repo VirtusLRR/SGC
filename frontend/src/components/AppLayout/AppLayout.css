@@ -1,0 +1,105 @@
+/* ========================================
+   APP LAYOUT - Container Principal
+   ======================================== */
+.app-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ========================================
+   CONTENT - Área Principal de Conteúdo
+   ======================================== */
+.app-layout__content {
+  flex: 1;
+  margin-left: 260px; /* Largura do sidebar expandido */
+  transition: margin-left 300ms ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--color-bg-tertiary);
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Content quando sidebar está colapsado */
+.app-layout__content--expanded {
+  margin-left: 70px; /* Largura do sidebar colapsado */
+}
+
+/* ========================================
+   SCROLLBAR CUSTOMIZADA DO CONTENT
+   ======================================== */
+.app-layout__content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.app-layout__content::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+.app-layout__content::-webkit-scrollbar-thumb {
+  background: var(--color-border-medium);
+  border-radius: 4px;
+}
+
+.app-layout__content::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-quaternary);
+}
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+
+/* Tablet - Ajustar margin quando sidebar colapsa por padrão */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .app-layout__content {
+    margin-left: 70px; /* Sidebar colapsado por padrão */
+  }
+
+  .app-layout__content--expanded {
+    margin-left: 260px; /* Quando expandido */
+  }
+}
+
+/* Mobile - Sem margin, sidebar vira overlay */
+@media (max-width: 767px) {
+  .app-layout__content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .app-layout__content--expanded {
+    margin-left: 0;
+  }
+
+  /* Prevenir scroll horizontal */
+  .app-layout__content {
+    overflow-x: hidden;
+  }
+}
+
+/* ========================================
+   SMOOTH SCROLL
+   ======================================== */
+.app-layout__content {
+  scroll-behavior: smooth;
+}
+
+/* ========================================
+   ANIMAÇÃO DE ENTRADA
+   ======================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.app-layout__content {
+  animation: fadeIn 200ms ease-out;
+}
+

@@ -79,15 +79,26 @@ sql_item_writer_prompt: >
   }
 
   ### Seu Fluxo:
+  
+  **ATENÇÃO: measure_unity é OBRIGATÓRIO!**
+  
+  Antes de chamar add_item_tool, VERIFIQUE:
+  - item.item_data.name existe?
+  - item.item_data.amount existe?
+  - item.item_data.measure_unity existe? **← OBRIGATÓRIO! Se não existir, use "unidade" como padrão**
+  
   for item in items:
+      # GARANTIR que measure_unity existe
+      measure_unity = item.item_data.measure_unity if hasattr(item.item_data, 'measure_unity') else "unidade"
+      
       resultado = add_item_tool(
           name=item.item_data.name,
           amount=item.item_data.amount,
-          measure_unity=item.item_data.measure_unity,
-          price=item.item_data.price,
-          price_unit=item.item_data.price_unit,
-          description=item.item_data.description,
-          expiration_date=item.item_data.expiration_date
+          measure_unity=measure_unity,  # ← OBRIGATÓRIO - use "unidade" se não informado
+          price=item.item_data.price if hasattr(item.item_data, 'price') else 0.0,
+          price_unit=item.item_data.price_unit if hasattr(item.item_data, 'price_unit') else "unidade",
+          description=item.item_data.description if hasattr(item.item_data, 'description') else "",
+          expiration_date=item.item_data.expiration_date if hasattr(item.item_data, 'expiration_date') else None
       )
 
       if resultado["success"]:

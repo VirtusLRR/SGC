@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { MetricCard } from '../../../components/MetricCard';
 import { ItemsTable } from '../components/ItemsTable';
 import { ItemFormModal } from '../components/ItemFormModal';
@@ -10,6 +11,9 @@ import './InventoryOverview.css';
  * Tela Principal do Inventory Overview
  */
 export const InventoryOverview = forwardRef((props, ref) => {
+  // Recebe o contexto do Outlet (inventoryRef do AppLayout)
+  const outletContext = useOutletContext();
+  const inventoryRef = outletContext?.inventoryRef;
   const { items, loading, fetchItems, deleteItem, createItem, updateItem } = useItems();
   const { summary, fetchSummary } = useInventorySummary();
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,10 +23,6 @@ export const InventoryOverview = forwardRef((props, ref) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const searchTimeoutRef = useRef(null);
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const loadData = async () => {
     try {
@@ -35,8 +35,17 @@ export const InventoryOverview = forwardRef((props, ref) => {
     }
   };
 
+  useEffect(() => {
+    loadData();
+  }, []);
+
   // Expõe o método loadData para componentes pais via ref
   useImperativeHandle(ref, () => ({
+    loadData
+  }));
+
+  // Conecta a ref do AppLayout com o método loadData
+  useImperativeHandle(inventoryRef, () => ({
     loadData
   }));
 
