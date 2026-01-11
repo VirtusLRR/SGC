@@ -3,9 +3,7 @@ from pytest_bdd import scenarios, given, when, then, parsers
 from fastapi.testclient import TestClient
 from datetime import datetime
 
-
 scenarios('../features/crud_item.feature')
-
 
 @pytest.fixture
 def context():
@@ -13,9 +11,7 @@ def context():
         "payload": {},
         "response": None
     }
-
-
-
+    
 @given('o usuário está autenticado no sistema')
 def usuario_autenticado():
     pass
@@ -27,8 +23,6 @@ def acessa_pagina_cadastro(context):
         "price_unit": "R$",
         "expiration_date": None
     }
-
-
 
 @when(parsers.parse('o usuário informa o nome "{nome}"'))
 def informa_nome(context, nome):
@@ -58,37 +52,27 @@ def confirma_cadastro(client, context):
     response = client.post("/api/items", json=context["payload"])
     context["response"] = response
 
-
-
 @then(parsers.parse('o sistema deve retornar status {status_code}'))
 def verifica_status(context, status_code):
-    
     if "ou" in status_code:
-        
         codigos_validos = [int(code.strip()) for code in status_code.split('ou')]
         assert context["response"].status_code in codigos_validos
     else:
-        
         assert context["response"].status_code == int(status_code)
 
 @then(parsers.parse('o sistema deve exibir a mensagem "{mensagem}"'))
 def verifica_mensagem(context, mensagem):
     response_json = context["response"].json()
-    
-    
     if context["response"].status_code == 201:
+        
         if "cadastrado com sucesso" in mensagem:
-            
             assert response_json["name"] == context["payload"]["name"]
             return
-
-    
+            
     detail = response_json.get("detail", "")
     
     if isinstance(detail, list):
-        
         detail = str(detail)
-    
     
     assert mensagem.lower() in str(detail).lower()
 
