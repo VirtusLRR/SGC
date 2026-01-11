@@ -3,7 +3,7 @@ from fastapi import Depends, HTTPException, status, Response
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from database.database import get_db
-from models import Recipe
+from models import Recipe, RecipeItem
 from repositories import RecipeRepository
 from schemas import RecipeResponse, RecipeRequest
 
@@ -11,7 +11,21 @@ class RecipeController:
     @staticmethod
     def create(request: RecipeRequest, db: Session = Depends(get_db)):
         """Cria uma nova receita."""
-        recipe = RecipeRepository.save(db, Recipe(**request.model_dump()))
+        # Converte o request em dict e remove recipe_itens
+        recipe_data = request.model_dump(exclude={'recipe_itens'})
+        
+        # Cria o objeto Recipe
+        recipe = Recipe(**recipe_data)
+        
+        # Converte cada item do request em objetos RecipeItem
+        if request.recipe_itens:
+            recipe.recipe_itens = [
+                RecipeItem(item_id=item.item_id, amount=item.amount)
+                for item in request.recipe_itens
+            ]
+        
+        # Salva a receita (o cascade irá salvar os recipe_itens automaticamente)
+        recipe = RecipeRepository.save(db, recipe)
         return RecipeResponse.model_validate(recipe)
 
     @staticmethod
@@ -54,7 +68,22 @@ class RecipeController:
         """Atualiza uma receita existente."""
         if not RecipeRepository.exists_by_id(db, id):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Receita não encontrada")
-        recipe = RecipeRepository.save(db, Recipe(id=id, **request.model_dump()))
+        
+        # Converte o request em dict e remove recipe_itens
+        recipe_data = request.model_dump(exclude={'recipe_itens'})
+        
+        # Cria o objeto Recipe com o id
+        recipe = Recipe(id=id, **recipe_data)
+        
+        # Converte cada item do request em objetos RecipeItem
+        if request.recipe_itens:
+            recipe.recipe_itens = [
+                RecipeItem(recipe_id=id, item_id=item.item_id, amount=item.amount)
+                for item in request.recipe_itens
+            ]
+        
+        # Salva a receita (o cascade irá atualizar os recipe_itens automaticamente)
+        recipe = RecipeRepository.save(db, recipe)
         return RecipeResponse.model_validate(recipe)
     
     @staticmethod

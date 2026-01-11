@@ -129,6 +129,7 @@ export const ItemsTable = ({
             <th>Unit</th>
             <th>Quantity</th>
             <th>Unit Price</th>
+            <th>Price Unit</th>
             <th>Total Value</th>
             <th>Expiry Date</th>
             <th>Status</th>
@@ -157,6 +158,7 @@ export const ItemsTable = ({
               <td>{item.measure_unity}</td>
               <td>{item.amount.toLocaleString('pt-BR')}</td>
               <td>{formatCurrency(item.price || 0)}</td>
+              <td>{item.price_unit || '-'}</td>
               <td className="total-value">{formatCurrency(item.totalValue)}</td>
               <td>{formatExpirationDate(item.expiration_date)}</td>
               <td>
@@ -198,6 +200,7 @@ ItemsTable.propTypes = {
       measure_unity: PropTypes.string.isRequired,
       amount: PropTypes.number.isRequired,
       price: PropTypes.number,
+      price_unit: PropTypes.string,
       description: PropTypes.string,
       expiration_date: PropTypes.string,
     })

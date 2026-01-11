@@ -8,7 +8,7 @@ class ItemBase(BaseModel):
     amount: float
     description: Optional[str] = None
     price: Optional[float] = 0
-    price_unit: ClassVar[str] = 'unidade'
+    price_unit: Optional[str] = 'unidade'
     expiration_date: Optional[datetime] = None
     create_at: Optional[datetime] = Field(default_factory=datetime.now) 
     update_at: Optional[datetime] = None

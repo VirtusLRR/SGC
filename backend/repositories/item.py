@@ -30,7 +30,11 @@ class ItemRepository:
     @staticmethod
     def find_by_name(db: Session, name: str) -> list[type[Item]]:
         """Recupera itens pelo seu nome."""
-        return db.query(Item).filter(Item.name == name).all()
+        return (
+            db.query(Item)
+            .filter(Item.name.ilike(f"%{name}%"))
+            .all()
+        )
 
     @staticmethod
     def exists_by_id(db: Session, id: int) -> bool:

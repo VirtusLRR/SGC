@@ -132,11 +132,6 @@ export const InventoryOverview = forwardRef((props, ref) => {
     }
   };
 
-  const handleExport = () => {
-    // TODO: Implementar exportação
-    console.log('Exportar dados');
-  };
-
   const filteredItems = items.filter(item => {
     if (activeFilter === 'all') return true;
     if (activeFilter === 'low-stock') return item.amount <= 5;
@@ -230,9 +225,6 @@ export const InventoryOverview = forwardRef((props, ref) => {
         </div>
 
         <div className="inventory-items__actions">
-          <button className="btn btn--secondary" onClick={handleExport}>
-            ⬇️ Export
-          </button>
           <button className="btn btn--primary" onClick={handleAddItem}>
             + Add New Item
           </button>

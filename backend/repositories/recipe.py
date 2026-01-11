@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func
 from decimal import Decimal
 
@@ -9,45 +9,50 @@ class RecipeRepository:
     @staticmethod
     def find_all(db: Session) -> list[Recipe]:
         """Recupera todas as receitas do banco de dados."""
-        return db.query(Recipe).all()
+        return db.query(Recipe).options(joinedload(Recipe.recipe_itens)).all()
 
     @staticmethod
     def save(db: Session, recipe: Recipe) -> Recipe:
         """Salva ou atualiza uma receita no banco de dados."""
         if recipe.id:
-            db.merge(recipe)
+            recipe = db.merge(recipe)
         else:
             db.add(recipe)
         db.commit()
+        db.refresh(recipe)
         return recipe
 
     @staticmethod
     def find_by_id(db: Session, id: int) -> Recipe:
         """Recupera uma receita pelo seu ID."""
-        return db.query(Recipe).filter(Recipe.id == id).first()
+        return db.query(Recipe).options(joinedload(Recipe.recipe_itens)).filter(Recipe.id == id).first()
 
     @staticmethod
     def exists_by_id(db: Session, id: int) -> bool:
         """Verifica se uma receita existe pelo seu ID."""
-        return db.query(Recipe).filter(Recipe.id == id).first() is not None
+        return db.query(Recipe).options(joinedload(Recipe.recipe_itens)).filter(Recipe.id == id).first() is not None
 
     @staticmethod
     def delete_by_id(db: Session, id: int) -> None:
         """Remove uma receita pelo seu ID."""
-        recipe = db.query(Recipe).filter(Recipe.id == id).first()
+        recipe = db.query(Recipe).options(joinedload(Recipe.recipe_itens)).filter(Recipe.id == id).first()
         if recipe is not None:
             db.delete(recipe)
             db.commit()
 
     @staticmethod
-    def find_by_name(db: Session, name: int) -> Recipe:
+    def find_by_name(db: Session, title: int) -> list[type[Recipe]]:
         """Recupera uma receita pelo seu nome."""
-        return db.query(Recipe).filter(Recipe.name == name).first()
+        return (
+            db.query(Recipe).options(joinedload(Recipe.recipe_itens))
+            .filter(Recipe.title.ilike(f"%{title}%"))
+            .all()
+        )
 
     @staticmethod
     def exist_by_name(db: Session, name: int) -> bool:
         """Verifica se uma receita existe pelo seu nome."""
-        exist = db.query(Recipe).filter(Recipe.name == name).first()
+        exist = db.query(Recipe).options(joinedload(Recipe.recipe_itens)).filter(Recipe.name == name).first()
         if exist is not None:
             return False
         else:
@@ -56,7 +61,7 @@ class RecipeRepository:
     @staticmethod
     def find_recipe_cost(db: Session, recipe_id: int) -> dict:
         """Calcula o custo total de uma receita baseado nos preços atuais com conversão de unidades"""
-        recipe = db.query(Recipe).filter(Recipe.id == recipe_id).first()
+        recipe = db.query(Recipe).options(joinedload(Recipe.recipe_itens)).filter(Recipe.id == recipe_id).first()
         if not recipe:
             return None
 
@@ -67,12 +72,12 @@ class RecipeRepository:
             item = recipe_item.item
 
             unit_price = calculate_unit_price(
-                item.price,
+                Decimal(str(item.price)),
                 item.price_unit,
                 item.measure_unity
             )
 
-            item_cost = recipe_item.amount * unit_price
+            item_cost = Decimal(str(recipe_item.amount)) * unit_price
             total_cost += item_cost
 
             ingredients.append({
@@ -95,7 +100,7 @@ class RecipeRepository:
     @staticmethod
     def find_all_recipes_with_cost(db: Session) -> list[dict]:
         """Retorna todas as receitas com seus custos calculados"""
-        recipes = db.query(Recipe).all()
+        recipes = db.query(Recipe).options(joinedload(Recipe.recipe_itens)).all()
         return [
             RecipeRepository.find_recipe_cost(db, recipe.id)
             for recipe in recipes
@@ -104,7 +109,7 @@ class RecipeRepository:
     @staticmethod
     def find_feasible_recipes(db: Session) -> list[dict]:
         """Retorna receitas que podem ser feitas com o estoque atual"""
-        recipes = db.query(Recipe).all()
+        recipes = db.query(Recipe).options(joinedload(Recipe.recipe_itens)).all()
         feasible = []
         for recipe in recipes:
             can_make = True

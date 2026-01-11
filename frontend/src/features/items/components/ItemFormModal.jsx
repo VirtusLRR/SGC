@@ -21,6 +21,7 @@ export const ItemFormModal = ({
     amount: 0,
     description: '',
     price: 0,
+    price_unit: '',
     expiration_date: '',
   });
 
@@ -34,6 +35,7 @@ export const ItemFormModal = ({
         amount: item.amount || 0,
         description: item.description || '',
         price: item.price || 0,
+        price_unit: item.price_unit || '',
         expiration_date: item.expiration_date 
           ? new Date(item.expiration_date).toISOString().split('T')[0] 
           : '',
@@ -50,6 +52,7 @@ export const ItemFormModal = ({
       amount: 0,
       description: '',
       price: 0,
+      price_unit: '',
       expiration_date: '',
     });
     setErrors({});
@@ -161,14 +164,11 @@ export const ItemFormModal = ({
               disabled={loading}
             >
               <option value="">Selecione...</option>
-              <option value="UN">Unidade (UN)</option>
-              <option value="KG">Quilograma (KG)</option>
-              <option value="LT">Litro (LT)</option>
-              <option value="M">Metro (M)</option>
-              <option value="M²">Metro Quadrado (M²)</option>
-              <option value="M³">Metro Cúbico (M³)</option>
-              <option value="CX">Caixa (CX)</option>
-              <option value="PC">Peça (PC)</option>
+              <option value="unidade">Unidade (UN)</option>
+              <option value="kg">Quilograma (KG)</option>
+              <option value="grama">Grama (G)</option>
+              <option value="litro">Litro (LT)</option>
+              <option value="mililitro">Mililitro (ML)</option>
             </select>
             {errors.measure_unity && <span className="form-error">{errors.measure_unity}</span>}
           </div>
@@ -231,6 +231,29 @@ export const ItemFormModal = ({
           </div>
 
           <div className="form-group">
+            <label htmlFor="price_unit" className="form-label">
+              Preço Unidade
+            </label>
+            <select
+              id="price_unit"
+              name="price_unit"
+              value={formData.price_unit}
+              onChange={handleChange}
+              className="form-input"
+              disabled={loading}
+            >
+              <option value="">Selecione...</option>
+              <option value="unidade">Unidade (UN)</option>
+              <option value="kg">Quilograma (KG)</option>
+              <option value="grama">Grama (G)</option>
+              <option value="litro">Litro (LT)</option>
+              <option value="mililitro">Mililitro (ML)</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group form-group--full">
             <label htmlFor="description" className="form-label">
               SKU / Descrição
             </label>
@@ -292,6 +315,7 @@ ItemFormModal.propTypes = {
     amount: PropTypes.number,
     description: PropTypes.string,
     price: PropTypes.number,
+    price_unit: PropTypes.string,
     expiration_date: PropTypes.string,
   }),
   loading: PropTypes.bool,
