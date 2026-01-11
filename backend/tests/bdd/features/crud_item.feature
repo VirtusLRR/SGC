@@ -34,3 +34,16 @@ Feature: Cadastro de itens
     And confirma o cadastro
     Then o sistema deve retornar status 400
     And o sistema deve exibir a mensagem "O preço deve ser maior que zero"
+
+  Scenario: Remoção bem-sucedida de um item
+    Given que existe um item "Maçã" cadastrado com 10 unidades
+    When o usuário clica no botão remover ao lado do item "Maçã"
+    And confirma a remoção
+    Then o sistema deve retornar status 200 ou 204
+    And o item "Maçã" não deve aparecer na lista de itens
+
+  Scenario: Tentativa de remoção de itens já esgotados
+    Given que existe um item "Maçã" cadastrado com 0 unidades
+    When o usuário clica no botão remover ao lado do item "Maçã"
+    Then o sistema deve retornar status 400
+    And o sistema deve exibir a mensagem "O item já está esgotado"

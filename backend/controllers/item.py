@@ -44,6 +44,13 @@ class ItemController:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Item não encontrado"
             )
+        item_obj = db.query(Item).filter(Item.id == id).first()
+        if item_obj and item_obj.amount == 0:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, 
+                detail="O item já está esgotado"
+            )
+
         ItemRepository.delete_by_id(db, id)
         return JSONResponse(
             status_code=status.HTTP_204_NO_CONTENT, 
