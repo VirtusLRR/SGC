@@ -1,0 +1,2 @@
+export { ConsumptionTable } from './ConsumptionTable';
+

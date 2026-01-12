@@ -1,0 +1,2 @@
+export { TopItemsCard } from './TopItemsCard';
+
