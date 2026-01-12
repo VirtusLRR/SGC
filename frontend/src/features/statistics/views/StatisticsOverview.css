@@ -1,0 +1,234 @@
+.statistics-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+/* Header */
+.statistics-overview__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.statistics-overview__title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.statistics-overview__title-icon {
+  color: #2196f3;
+  flex-shrink: 0;
+}
+
+.statistics-overview__title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+}
+
+.statistics-overview__subtitle {
+  margin: 8px 0 0 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* KPIs - Métricas */
+.statistics-overview__metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* Gastos Mensais */
+.statistics-overview__monthly {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+/* Gráficos */
+.statistics-overview__charts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+/* Análises Detalhadas */
+.statistics-overview__details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* Transações Recentes */
+.statistics-overview__recent {
+  width: 100%;
+}
+
+/* Error State */
+.statistics-overview__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 400px;
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.statistics-overview__error-icon {
+  font-size: 64px;
+  opacity: 0.7;
+}
+
+.statistics-overview__error h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.statistics-overview__error p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  max-width: 500px;
+}
+
+.statistics-overview__retry-button {
+  padding: 12px 24px;
+  background: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+}
+
+.statistics-overview__retry-button:hover {
+  background: #1976d2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+}
+
+.statistics-overview__retry-button:active {
+  transform: translateY(0);
+}
+
+/* Responsividade */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .statistics-overview__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .statistics-overview__charts {
+    grid-template-columns: 1fr;
+  }
+
+  .statistics-overview__details {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .statistics-overview {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .statistics-overview__header {
+    padding: 16px;
+  }
+
+  .statistics-overview__title {
+    font-size: 22px;
+  }
+
+  .statistics-overview__subtitle {
+    font-size: 13px;
+  }
+
+  .statistics-overview__metrics {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .statistics-overview__charts {
+    gap: 16px;
+  }
+
+  .statistics-overview__details {
+    gap: 16px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .statistics-overview {
+    padding: 12px;
+  }
+
+  .statistics-overview__header {
+    padding: 12px;
+  }
+
+  .statistics-overview__title {
+    font-size: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .statistics-overview__error {
+    padding: 24px 16px;
+  }
+
+  .statistics-overview__error h2 {
+    font-size: 20px;
+  }
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.statistics-overview > * {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.statistics-overview__metrics > * {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.statistics-overview__charts > * {
+  animation: fadeIn 0.5s ease-out;
+}
+
