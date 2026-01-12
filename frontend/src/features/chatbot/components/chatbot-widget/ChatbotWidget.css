@@ -28,6 +28,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
+}
+
+.chatbot-widget__toggle svg {
+    color: white;
+    flex-shrink: 0;
 }
 
 .chatbot-widget__toggle:hover {
@@ -107,6 +113,11 @@
     align-items: center;
     justify-content: center;
     font-size: 20px;
+    color: white;
+}
+
+.chatbot-widget__avatar svg {
+    flex-shrink: 0;
 }
 
 .chatbot-widget__header-text {
@@ -127,6 +138,7 @@
 
 .chatbot-widget__header-actions {
     display: flex;
+    align-items: center;
     gap: 8px;
 }
 
@@ -143,6 +155,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
+}
+
+.chatbot-widget__action-button svg {
+    color: white;
+    flex-shrink: 0;
 }
 
 .chatbot-widget__action-button:hover {
@@ -201,6 +219,14 @@
 .chatbot-widget__welcome-icon {
     font-size: 48px;
     margin-bottom: 16px;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatbot-widget__welcome-icon svg {
+    flex-shrink: 0;
 }
 
 .chatbot-widget__welcome-title {
@@ -231,9 +257,17 @@
 }
 
 .chatbot-widget__error-icon {
-    font-size: 16px;
+    font-size: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-danger);
 }
 
+.chatbot-widget__error-icon svg {
+    flex-shrink: 0;
+}
 .chatbot-widget__error-text {
     font-size: 13px;
     color: var(--color-danger-dark);

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 import './MetricCard.css';
 
 /**
@@ -16,7 +17,7 @@ export const MetricCard = ({ icon, title, value, subtitle, trend, trendValue, ty
         <div className="metric-card__icon">{icon}</div>
         {trend && (
           <div className={`metric-card__trend metric-card__trend--${trend}`}>
-            {trend === 'up' ? '↑' : '↓'} {trendValue}
+            {trend === 'up' ? <TrendingUp size={16} /> : <TrendingDown size={16} />} {trendValue}
           </div>
         )}
       </div>

@@ -125,15 +125,15 @@ export const ItemsTable = ({
             <th>
               <input type="checkbox" />
             </th>
-            <th>Item Name</th>
-            <th>Unit</th>
-            <th>Quantity</th>
-            <th>Unit Price</th>
-            <th>Price Unit</th>
-            <th>Total Value</th>
-            <th>Expiry Date</th>
+            <th>Nome do Item</th>
+            <th>Unidade</th>
+            <th>Quantidade</th>
+            <th>Preço Unitário</th>
+            <th>Unidade do Preço</th>
+            <th>Valor Total</th>
+            <th>Data de Validade</th>
             <th>Status</th>
-            <th>Actions</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { MessageCircle, X, History, Trash2, Hand, AlertTriangle, Bot } from 'lucide-react';
 import { useChatbot } from '../../hooks/useChatbot';
 import { ChatbotMessage } from '../chatbot-message/ChatbotMessage';
 import { ChatbotInput } from '../chatbot-input/ChatbotInput';
@@ -114,7 +115,7 @@ export const ChatbotWidget = ({ onResponseReceived }) => {
         onClick={toggleChat}
         aria-label={isOpen ? 'Fechar chat' : 'Abrir chat'}
       >
-        {isOpen ? '✕' : '💬'}
+        {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
       </button>
 
       {/* Janela do chat */}
@@ -123,7 +124,9 @@ export const ChatbotWidget = ({ onResponseReceived }) => {
           {/* Header */}
           <div className="chatbot-widget__header">
             <div className="chatbot-widget__header-info">
-              <div className="chatbot-widget__avatar">🤖</div>
+              <div className="chatbot-widget__avatar">
+                <Bot size={24} />
+              </div>
               <div className="chatbot-widget__header-text">
                 <h3 className="chatbot-widget__title">Assistente de Estoque</h3>
                 <span className="chatbot-widget__status">Online</span>
@@ -137,7 +140,7 @@ export const ChatbotWidget = ({ onResponseReceived }) => {
                 aria-label="Ver histórico"
                 title="Ver histórico"
               >
-                📜
+                <History size={18} />
               </button>
               <button
                 className="chatbot-widget__action-button"
@@ -145,7 +148,7 @@ export const ChatbotWidget = ({ onResponseReceived }) => {
                 aria-label="Limpar conversa"
                 title="Nova conversa"
               >
-                🗑️
+                <Trash2 size={18} />
               </button>
               <button
                 className="chatbot-widget__action-button chatbot-widget__action-button--close"
@@ -153,7 +156,7 @@ export const ChatbotWidget = ({ onResponseReceived }) => {
                 aria-label="Fechar chat"
                 title="Fechar"
               >
-                ✕
+                <X size={18} />
               </button>
             </div>
           </div>
@@ -165,7 +168,9 @@ export const ChatbotWidget = ({ onResponseReceived }) => {
           >
             {messages.length === 0 ? (
               <div className="chatbot-widget__welcome">
-                <div className="chatbot-widget__welcome-icon">👋</div>
+                <div className="chatbot-widget__welcome-icon">
+                  <Hand size={48} />
+                </div>
                 <h4 className="chatbot-widget__welcome-title">
                   Olá! Como posso ajudar?
                 </h4>
@@ -191,7 +196,9 @@ export const ChatbotWidget = ({ onResponseReceived }) => {
           {/* Error Message */}
           {error && (
             <div className="chatbot-widget__error">
-              <span className="chatbot-widget__error-icon">⚠️</span>
+              <span className="chatbot-widget__error-icon">
+                <AlertTriangle size={20} />
+              </span>
               <span className="chatbot-widget__error-text">{error}</span>
             </div>
           )}

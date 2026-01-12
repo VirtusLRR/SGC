@@ -149,11 +149,11 @@ export const RecipesTable = ({
             <th>
               <input type="checkbox" />
             </th>
-            <th>Recipe Title</th>
-            <th>Description</th>
-            <th>Total Value</th>
+            <th>Título da Receita</th>
+            <th>Descrição</th>
+            <th>Valor Total</th>
             <th>Status</th>
-            <th>Actions</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>

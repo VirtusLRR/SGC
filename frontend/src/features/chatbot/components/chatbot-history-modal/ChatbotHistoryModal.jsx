@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { History, Search, AlertTriangle, MessageCircle, X, User, Bot } from 'lucide-react';
 import './ChatbotHistoryModal.css';
 
 /**
@@ -91,23 +92,24 @@ export const ChatbotHistoryModal = ({ isOpen, onClose, onLoadHistory }) => {
         {/* Header */}
         <div className="chatbot-history-modal__header">
           <h2 className="chatbot-history-modal__title">
-            📜 Histórico de Conversas
+            <History size={24} /> Histórico de Conversas
           </h2>
           <button
             className="chatbot-history-modal__close"
             onClick={onClose}
             aria-label="Fechar histórico"
           >
-            ✕
+            <X size={24} />
           </button>
         </div>
 
         {/* Search Bar */}
         <div className="chatbot-history-modal__search">
+          <Search size={20} className="chatbot-history-modal__search-icon" />
           <input
             type="text"
             className="chatbot-history-modal__search-input"
-            placeholder="🔍 Buscar nas conversas..."
+            placeholder="Buscar nas conversas..."
             value={searchTerm}
             onChange={handleSearchChange}
           />
@@ -124,7 +126,9 @@ export const ChatbotHistoryModal = ({ isOpen, onClose, onLoadHistory }) => {
 
           {error && (
             <div className="chatbot-history-modal__error">
-              <span className="chatbot-history-modal__error-icon">⚠️</span>
+              <span className="chatbot-history-modal__error-icon">
+                <AlertTriangle size={48} />
+              </span>
               <p>{error}</p>
               <button
                 className="chatbot-history-modal__retry"
@@ -137,7 +141,9 @@ export const ChatbotHistoryModal = ({ isOpen, onClose, onLoadHistory }) => {
 
           {!loading && !error && history.length === 0 && (
             <div className="chatbot-history-modal__empty">
-              <div className="chatbot-history-modal__empty-icon">💬</div>
+              <div className="chatbot-history-modal__empty-icon">
+                <MessageCircle size={48} />
+              </div>
               <p className="chatbot-history-modal__empty-text">
                 Nenhuma conversa encontrada
               </p>
@@ -170,7 +176,7 @@ export const ChatbotHistoryModal = ({ isOpen, onClose, onLoadHistory }) => {
                         <div className="chatbot-history-modal__message chatbot-history-modal__message--user">
                           <div className="chatbot-history-modal__message-header">
                             <span className="chatbot-history-modal__message-sender">
-                              👤 Você
+                              <User size={16} /> Você
                             </span>
                             <span className="chatbot-history-modal__message-time">
                               {formatDate(item.create_at)}
@@ -185,7 +191,7 @@ export const ChatbotHistoryModal = ({ isOpen, onClose, onLoadHistory }) => {
                         <div className="chatbot-history-modal__message chatbot-history-modal__message--ai">
                           <div className="chatbot-history-modal__message-header">
                             <span className="chatbot-history-modal__message-sender">
-                              🤖 Assistente
+                              <Bot size={16} /> Assistente
                             </span>
                           </div>
                           <div className="chatbot-history-modal__message-text">
@@ -202,7 +208,9 @@ export const ChatbotHistoryModal = ({ isOpen, onClose, onLoadHistory }) => {
 
           {!loading && !error && searchTerm && Object.keys(filteredGroupedHistory).length === 0 && (
             <div className="chatbot-history-modal__empty">
-              <div className="chatbot-history-modal__empty-icon">🔍</div>
+              <div className="chatbot-history-modal__empty-icon">
+                <Search size={48} />
+              </div>
               <p className="chatbot-history-modal__empty-text">
                 Nenhuma conversa encontrada para "{searchTerm}"
               </p>

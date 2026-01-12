@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { User, Bot, AudioLines } from 'lucide-react';
 import './ChatbotMessage.css';
 
 /**
@@ -157,11 +158,11 @@ export const ChatbotMessage = ({ message, timestamp, isUser }) => {
             <div className="chat-message__avatar">
                 {isUser ? (
                     <div className="chat-message__avatar-icon chat-message__avatar-icon--user">
-                        👤
+                        <User size={20} />
                     </div>
                 ) : (
                     <div className="chat-message__avatar-icon chat-message__avatar-icon--bot">
-                        🤖
+                        <Bot size={20} />
                     </div>
                 )}
             </div>
@@ -183,7 +184,9 @@ export const ChatbotMessage = ({ message, timestamp, isUser }) => {
                     {audioData && (
                         <div className="chat-message__audio-container">
                             <div className="chat-message__audio-wrapper">
-                                <span className="chat-message__audio-icon">🎵</span>
+                                <span className="chat-message__audio-icon">
+                                    <AudioLines size={20} />
+                                </span>
                                 <audio
                                     controls
                                     className="chat-message__audio"

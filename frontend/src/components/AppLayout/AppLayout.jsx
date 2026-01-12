@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { Outlet } from 'react-router-dom';
+import { Package, BookOpen, BarChart3 } from 'lucide-react';
 import { Sidebar } from '../Sidebar';
 import { ChatbotWidget } from '../../features/chatbot/components/chatbot-widget/ChatbotWidget';
 import './AppLayout.css';
@@ -22,9 +23,9 @@ export const AppLayout = () => {
   };
 
   const menuItems = [
-    { path: '/items', icon: '📦', label: 'Itens' },
-    { path: '/recipes', icon: '📝', label: 'Receitas' },
-    { path: '/statistics', icon: '📊', label: 'Estatísticas' }
+    { path: '/items', icon: <Package size={20} />, label: 'Itens' },
+    { path: '/recipes', icon: <BookOpen size={20} />, label: 'Receitas' },
+    { path: '/statistics', icon: <BarChart3 size={20} />, label: 'Estatísticas' }
   ];
 
   return (

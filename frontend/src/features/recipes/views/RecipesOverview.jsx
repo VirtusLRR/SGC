@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import { ChefHat, CheckCircle, Bell } from 'lucide-react';
 import { MetricCard } from '../../../components/MetricCard';
 import { RecipesTable } from '../components/RecipesTable';
 import { RecipeFormModal } from '../components/RecipeFormModal';
@@ -143,19 +144,19 @@ export const RecipesOverview = forwardRef((props, ref) => {
       {/* Header */}
       <div className="recipes-header">
         <div className="recipes-header__content">
-          <h1>Recipes Overview</h1>
-          <p>Manage and monitor your recipes</p>
+          <h1>Visão Geral de Receitas</h1>
+          <p>Gerencie e monitore suas receitas</p>
         </div>
         <div className="recipes-header__search">
           <input
             type="text"
-            placeholder="Search recipes..."
+            placeholder="Buscar receitas..."
             value={searchTerm}
             onChange={handleSearch}
             className="search-input"
           />
           <div className="notification-icon">
-            🔔
+            <Bell size={20} />
             <span className="notification-badge">3</span>
           </div>
         </div>
@@ -164,14 +165,14 @@ export const RecipesOverview = forwardRef((props, ref) => {
       {/* Metrics Cards */}
       <div className="metrics-grid">
         <MetricCard
-          icon="🍳"
-          title="Total Recipes"
+          icon={<ChefHat size={32} />}
+          title="Total de Receitas"
           value={summary?.total_recipes || 0}
           type="info"
         />
         <MetricCard
-          icon="✅"
-          title="Feasible Recipes"
+          icon={<CheckCircle size={32} />}
+          title="Receitas Viáveis"
           value={summary?.feasible_recipes || 0}
           trend="up"
           trendValue={`+${summary?.feasible_percentage || 0}%`}
@@ -182,12 +183,12 @@ export const RecipesOverview = forwardRef((props, ref) => {
       {/* Recipe Items Section */}
       <div className="recipes-items">
         <div className="recipes-items__header">
-          <h2>Recipe Title</h2>
+          <h2>Título da Receita</h2>
         </div>
 
         <div className="recipes-items__actions">
           <button className="btn-action btn-action--primary" onClick={handleAddRecipe}>
-            + Add New Recipe
+            + Adicionar Nova Receita
           </button>
         </div>
 
@@ -201,7 +202,7 @@ export const RecipesOverview = forwardRef((props, ref) => {
         {filteredRecipes.length > 0 && (
           <div className="pagination">
             <span className="pagination__info">
-              Showing {filteredRecipes.length} of {summary?.total_recipes || 0} items
+              Mostrando {filteredRecipes.length} de {summary?.total_recipes || 0} itens
             </span>
           </div>
         )}
@@ -210,7 +211,7 @@ export const RecipesOverview = forwardRef((props, ref) => {
       {/* Most Used Ingredients Section */}
       {summary?.most_used_ingredients && summary.most_used_ingredients.length > 0 && (
         <div className="most-used-ingredients">
-          <h2>Most Used Ingredients</h2>
+          <h2>Ingredientes Mais Usados</h2>
           <div className="ingredients-chart">
             {summary.most_used_ingredients.slice(0, 4).map((ingredient, index) => {
               const maxCount = summary.most_used_ingredients[0].recipe_count;
@@ -233,7 +234,7 @@ export const RecipesOverview = forwardRef((props, ref) => {
               );
             })}
           </div>
-          <p className="showing-text">Showing 1-4 of {summary.most_used_ingredients.length} items</p>
+          <p className="showing-text">Mostrando 1-4 de {summary.most_used_ingredients.length} itens</p>
         </div>
       )}
 

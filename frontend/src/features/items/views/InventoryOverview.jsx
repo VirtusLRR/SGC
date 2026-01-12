@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import { Package, AlertTriangle, Clock, DollarSign, Bell } from 'lucide-react';
 import { MetricCard } from '../../../components/MetricCard';
 import { ItemsTable } from '../components/ItemsTable';
 import { ItemFormModal } from '../components/ItemFormModal';
@@ -147,19 +148,19 @@ export const InventoryOverview = forwardRef((props, ref) => {
       {/* Header */}
       <div className="inventory-header">
         <div className="inventory-header__content">
-          <h1>Inventory Overview</h1>
-          <p>Manage and monitor your inventory items</p>
+          <h1>Visão Geral do Inventário</h1>
+          <p>Gerencie e monitore seus itens do inventário</p>
         </div>
         <div className="inventory-header__search">
           <input
             type="text"
-            placeholder="Search items..."
+            placeholder="Buscar itens..."
             value={searchTerm}
             onChange={handleSearch}
             className="search-input"
           />
           <div className="notification-icon">
-            🔔
+            <Bell size={20} />
             <span className="notification-badge">3</span>
           </div>
         </div>
@@ -168,32 +169,32 @@ export const InventoryOverview = forwardRef((props, ref) => {
       {/* Metrics Cards */}
       <div className="metrics-grid">
         <MetricCard
-          icon="$"
-          title="Total Inventory Value"
+          icon={<DollarSign size={32} />}
+          title="Valor Total do Inventário"
           value={`R$ ${(summary?.total_inventory_value || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
           trend="up"
           trendValue="+8.5%"
           type="success"
         />
         <MetricCard
-          icon="📦"
-          title="Total Items"
+          icon={<Package size={32} />}
+          title="Total de Itens"
           value={summary?.total_items || 0}
-          subtitle={`${summary?.total_items || 0} items`}
+          subtitle={`${summary?.total_items || 0} itens`}
           type="info"
         />
         <MetricCard
-          icon="⚠️"
-          title="Out of Stock"
+          icon={<AlertTriangle size={32} />}
+          title="Fora de Estoque"
           value={summary?.items_out_of_stock || 0}
-          subtitle="Critical"
+          subtitle="Crítico"
           type="danger"
         />
         <MetricCard
-          icon="⏰"
-          title="Expiring Soon"
+          icon={<Clock size={32} />}
+          title="Expirando em Breve"
           value={summary?.expiring_soon_count || 0}
-          subtitle="Warning"
+          subtitle="Aviso"
           type="warning"
         />
       </div>
@@ -201,32 +202,32 @@ export const InventoryOverview = forwardRef((props, ref) => {
       {/* Inventory Items Section */}
       <div className="inventory-items">
         <div className="inventory-items__header">
-          <h2>Inventory Items</h2>
+          <h2>Itens do Inventário</h2>
           <div className="inventory-items__tabs">
             <button 
               className={`tab ${activeFilter === 'all' ? 'tab--active' : ''}`}
               onClick={() => setActiveFilter('all')}
             >
-              All Items
+              Todos os Itens
             </button>
             <button 
               className={`tab ${activeFilter === 'low-stock' ? 'tab--active' : ''}`}
               onClick={() => setActiveFilter('low-stock')}
             >
-              Low Stock
+              Estoque Baixo
             </button>
             <button 
               className={`tab ${activeFilter === 'expired' ? 'tab--active' : ''}`}
               onClick={() => setActiveFilter('expired')}
             >
-              Expired
+              Expirados
             </button>
           </div>
         </div>
 
         <div className="inventory-items__actions">
           <button className="btn btn--primary" onClick={handleAddItem}>
-            + Add New Item
+            + Adicionar Novo Item
           </button>
         </div>
 
@@ -240,7 +241,7 @@ export const InventoryOverview = forwardRef((props, ref) => {
         {filteredItems.length > 0 && (
           <div className="pagination">
             <span className="pagination__info">
-              Showing {filteredItems.length} of {summary?.total_items || 0} items
+              Mostrando {filteredItems.length} de {summary?.total_items || 0} itens
             </span>
           </div>
         )}

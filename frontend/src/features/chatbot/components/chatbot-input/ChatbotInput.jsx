@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Send, Image, Mic, Square, X, Trash2 } from 'lucide-react';
 import { Button } from '../../../../components/Button';
 import './ChatbotInput.css';
 
@@ -269,7 +270,7 @@ export const ChatbotInput = ({ onSend, onSendImage, onSendAudio, disabled, place
                         aria-label="Remover imagem"
                         type="button"
                     >
-                        ✕
+                        <X size={16} />
                     </button>
                 </div>
             )}
@@ -290,7 +291,9 @@ export const ChatbotInput = ({ onSend, onSendImage, onSendAudio, disabled, place
                     ) : (
                         <>
                             <div className="chat-input__audio-ready">
-                                <span className="chat-input__audio-icon">🎵</span>
+                                <span className="chat-input__audio-icon">
+                                    <Mic size={20} />
+                                </span>
                                 <span className="chat-input__audio-info">
                   <span className="chat-input__audio-label">Áudio gravado</span>
                   <span className="chat-input__audio-duration">{savedRecordingTime}s</span>
@@ -302,7 +305,7 @@ export const ChatbotInput = ({ onSend, onSendImage, onSendAudio, disabled, place
                                 aria-label="Remover áudio"
                                 type="button"
                             >
-                                ✕
+                                <Trash2 size={18} />
                             </button>
                         </>
                     )}
@@ -329,7 +332,7 @@ export const ChatbotInput = ({ onSend, onSendImage, onSendAudio, disabled, place
                     title="Anexar imagem"
                     type="button"
                 >
-                    📎
+                    <Image size={20} />
                 </button>
 
                 {/* Botão de microfone */}
@@ -342,7 +345,7 @@ export const ChatbotInput = ({ onSend, onSendImage, onSendAudio, disabled, place
                         title="Gravar áudio"
                         type="button"
                     >
-                        🎤
+                        <Mic size={20} />
                     </button>
                 ) : isRecording ? (
                     <button
@@ -352,7 +355,7 @@ export const ChatbotInput = ({ onSend, onSendImage, onSendAudio, disabled, place
                         title="Parar gravação"
                         type="button"
                     >
-                        ⏹️
+                        <Square size={20} />
                     </button>
                 ) : null}
 
@@ -382,12 +385,12 @@ export const ChatbotInput = ({ onSend, onSendImage, onSendAudio, disabled, place
                     aria-label="Enviar mensagem"
                     loading={disabled}
                 >
-                    {disabled ? '⏳' : '➤'}
+                    <Send size={20} />
                 </Button>
             </div>
 
             <div className="chat-input__hint">
-                {isRecording ? 'Gravando... Clique em ⏹️ para parar' :
+                {isRecording ? 'Gravando... Clique no quadrado para parar' :
                     audioBlob ? 'Áudio pronto para enviar' :
                         'Pressione Enter para enviar, Shift+Enter para quebrar linha'}
             </div>

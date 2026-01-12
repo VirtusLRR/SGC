@@ -50,6 +50,10 @@
     flex-shrink: 0;
 }
 
+.chat-message__avatar-icon svg {
+    flex-shrink: 0;
+}
+
 .chat-message__avatar-icon--user {
     background-color: var(--color-primary);
     color: white;
@@ -311,9 +315,16 @@
 }
 
 .chat-message__audio-icon {
-    font-size: 28px;
     flex-shrink: 0;
     line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+}
+
+.chat-message__audio-icon svg {
+    flex-shrink: 0;
 }
 
 .chat-message__audio {
@@ -336,9 +347,6 @@
         gap: 10px;
     }
 
-    .chat-message__audio-icon {
-        font-size: 24px;
-    }
 
     .chat-message__audio {
         max-width: 100%;

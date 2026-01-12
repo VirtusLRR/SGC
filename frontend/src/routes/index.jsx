@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { AppLayout } from '../components/index.js';
 import { InventoryOverview } from '../features/items/views/InventoryOverview';
 import { RecipesOverview } from '../features/recipes/views/RecipesOverview';
+import { StatisticsOverview } from '../features/statistics';
 
 /**
  * Configuração de rotas da aplicação com React Router v6
@@ -25,12 +26,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'statistics',
-        element: (
-          <div style={{ padding: '40px', textAlign: 'center' }}>
-            <h1>📊 Estatísticas</h1>
-            <p>Em Desenvolvimento...</p>
-          </div>
-        )
+        element: <StatisticsOverview/>
       },
       {
         path: '*',
